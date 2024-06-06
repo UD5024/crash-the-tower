@@ -1,1 +1,8 @@
-
+p {
+    font-family:"Times New Roman";
+    text-align:center;
+    border: 0;
+    padding: 0;
+}
+#gameframe {margin: auto; width:200vw; height:60vh; padding:0;}
+#control {margin: auto; width:100vw; height:36vh; position:fixed; top:62vh; left:0; padding:0;}
