@@ -3,21 +3,22 @@ var gamectx = gamecanvas.getContext("2d");
 var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
-var level = 2;
+var level = 1;
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 15, 20, 25, 30
 var tower_hp = 50;
 var my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
 var my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
+var damages = [0, 0];
 var isgame = false;
 var myfighters = [], enemyfighters = [];
 var my_frontest = [], enemy_frontest = [];
 var myfront = 350, enemyfront = 2475;
 var controlvalue = "none";
 
-let x_percentage_difference = (window.innerWidth-1366)/window.innerWidth, y_percentage_difference = (window.innerHeight-695)/window.innerHeight;
-let percentage_reflesh = 1+Math.min(x_percentage_difference||y_percentage_difference);
+let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
+let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
 document.querySelector('meta[name="viewport"]').setAttribute("content", "width=device-width, initial-scale="+percentage_reflesh+", maximum-scale="+percentage_reflesh+", user-scalable=0");
 
 ctrlcanvas.addEventListener("click", function(event){
@@ -46,10 +47,12 @@ class fighter1{
         this.team = team;
         if (this.team == "M") {
             this.direction = 1;
+            this.Dt = 0;
             this.weapon_color = "#0080FF";
         }
         else {
             this.direction = -1;
+            this.Dt = 1;
             this.weapon_color = "#FF0000";
         }
         this.hp = 5;
@@ -136,8 +139,8 @@ class fighter1{
             }
             else if (this.time >= 60) {
                 if (this.time == 60) {
-                    if (this.team == "M") {if (enemyfront-this.x <= 90) {send_a_damage(this.damage, enemy_frontest, enemyfighters);}}
-                    else {if (this.x-myfront <= 90) {send_a_damage(this.damage, my_frontest, myfighters);}}
+                    if (this.team == "M") {if (enemyfront-this.x <= 90) {send_a_damage(this.damage, enemy_frontest, enemyfighters, this.Dt);}}
+                    else {if (this.x-myfront <= 90) {send_a_damage(this.damage, my_frontest, myfighters, this.Dt);}}
                 }
                 gamectx.beginPath();
                 gamectx.fillStyle = "#ffffff"
@@ -258,10 +261,12 @@ class fighter2{
         this.team = team;
         if (this.team == "M") {
             this.direction = 1;
+            this.Dt = 0;
             this.weapon_color = "#0080FF";
         }
         else {
             this.direction = -1;
+            this.Dt = 1;
             this.weapon_color = "#FF0000";
         }
         this.hp = 3;
@@ -318,8 +323,8 @@ class fighter2{
         }
         else if (this.action == -1) {
             if (this.time%2 == 0) {
-                if (this.team == "M") {if (enemyfront-this.x <= 200) {send_a_damage(this.damage, enemy_frontest, enemyfighters);}}
-                else {if (this.x-myfront <= 200) {send_a_damage(this.damage, my_frontest, myfighters);}}
+                if (this.team == "M") {if (enemyfront-this.x <= 200) {send_a_damage(this.damage, enemy_frontest, enemyfighters, this.Dt);}}
+                else {if (this.x-myfront <= 200) {send_a_damage(this.damage, my_frontest, myfighters, this.Dt);}}
                 gamectx.beginPath();
                 gamectx.fillStyle = "#ffffff"
                 gamectx.arc(this.x+this.direction*(-30), 235-3, 30, 0, Math.PI*2);
@@ -478,6 +483,7 @@ function send_a_damage(damage, frontenemy, enemys) {
         enemys[selecrandom].hp -= damage;
         enemys[selecrandom].taken += damage;
     }
+    damages[1] += damage;
 }
 
 function frontest() {
