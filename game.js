@@ -3,7 +3,8 @@ var gamectx = gamecanvas.getContext("2d");
 var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
-var level = 1;
+var isshowdamage = document.getElementById("subshowdamage");
+var level = 1+3;
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 20
@@ -12,12 +13,13 @@ var my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
 var my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
 var damages = [0, 0];
 var mydamages = [0, 0, 0, 0, 0, 0];
+var dmg_numbers = [];
 var isgame = false;
 var myfighters = [], enemyfighters = [];
 var my_frontest = [], enemy_frontest = [];
 var myfront = 350, enemyfront = 2475;
-var controlvalue = "none";
 var enemysummonpoint = 2525;
+var is_dmg_visual = "Off";
 
 let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
 let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
@@ -36,12 +38,49 @@ function getMousePos(canvas, event) {
     };
 }
 
+document.getElementById("showdamage").addEventListener("click", function(){switchdmgvisual();});
+
+function switchdmgvisual(){
+    if (is_dmg_visual == "Off") {
+        is_dmg_visual = "On";
+        isshowdamage.style.backgroundColor = "green";
+        isshowdamage.innerHTML = is_dmg_visual
+    }
+    else {
+        is_dmg_visual = "Off";
+        isshowdamage.style.backgroundColor = "red";
+        isshowdamage.innerHTML = is_dmg_visual
+    }
+}
+
 gamectx.lineWidth = 5;
 ctrlctx.lineWidth = 5;
+gamectx.font = "30px serif";
 ctrlctx.font = "75px serif";
 var lingrad = gamectx.createLinearGradient(0, 0, 0, 150);
 lingrad.addColorStop(0, "#00ABEB");
 lingrad.addColorStop(1, "#ffffff");
+
+class damagevisual{
+    constructor(x, number, direction) {
+        this.x = x-15-direction*15;
+        this.y = 160+Math.random()*30;
+        this.number = -number;
+        this.direction = direction;
+        this.time = 10;
+        if (number == 0) {this.fontcolor = "rgba(100, 100, 100, "}
+        else {this.fontcolor = "rgba(255, 0, 0, "}
+        
+    }
+    run(){
+        let rgbacolor = this.fontcolor+(0.5+(20-this.time)*0.025)+")";
+        gamectx.beginPath();
+        gamectx.fillStyle = rgbacolor;
+        gamectx.fillText(this.number, this.x-this.direction*(20-this.time), this.y);
+        gamectx.closePath();
+        this.time--;
+    }
+}
 
 class fighter1{
     constructor(x, team) {
@@ -59,6 +98,7 @@ class fighter1{
         this.block = 4;
         this.taken = 0;
         this.damage = 1;
+        this.armor = 0;
         this.action = 0;
         this.time = 0;
     }
@@ -256,6 +296,11 @@ class fighter1{
             }
         }
     }
+    takedamage(take){
+        this.hp -= take;
+        this.taken += take;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
+    }
 }
 
 class fighter2{
@@ -274,6 +319,7 @@ class fighter2{
         this.block = 1;
         this.taken = 0;
         this.damage = 0.05;
+        this.armor = 0;
         this.action = 0;
         this.time = 0;
     }
@@ -465,6 +511,11 @@ class fighter2{
             }
         }
     }
+    takedamage(take){
+        this.hp -= take;
+        this.taken += take;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
+    }
 }
 
 class fighter3{
@@ -479,10 +530,11 @@ class fighter3{
             this.direction = -1;
             this.weapon_color = "#FF0000";
         }
-        this.hp = 50;
-        this.block = 50;
+        this.hp = 19.8;
+        this.block = 19.8;
         this.taken = 0;
-        this.damage = 0.005;
+        this.damage = 0.001;
+        this.armor = 0.1;
         this.action = 0;
         this.time = 0;
     }
@@ -627,7 +679,7 @@ class fighter3{
                     mydamages[2] += this.damage;
                 }
                 else {
-                    if (this.hp == 50) {this.x += 1.5;}
+                    if (this.hp == 19.8) {this.x += 1.5;}
                     else {this.x += 0.2;}
                 }
             }
@@ -637,11 +689,16 @@ class fighter3{
                     send_a_damage(this.damage, my_frontest, myfighters);
                 }
                 else {
-                    if (this.hp == 50) {this.x -= 1.5;}
+                    if (this.hp == 19.8) {this.x -= 1.5;}
                     else {this.x -= 0.2;}
                 }
             }
         }
+    }
+    takedamage(take){
+        this.hp -= take;
+        this.taken += take;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
     }
 }
 
@@ -662,7 +719,8 @@ class fighter4{
         this.hp = 5;
         this.block = 0.02;
         this.taken = 0;
-        this.damage = 10;
+        this.damage = 20;
+        this.armor = 0;
         this.action = 0;
         this.time = 0;
     }
@@ -711,11 +769,11 @@ class fighter4{
             if (this.time == 30) {
                 if (this.team == "M") {
                     send_AoE(this.damage, this.x, 100, this.team, 3);
-                    send_AoE(this.damage, this.x, 100, this.enemyteam);
+                    send_AoE(this.damage/2, this.x, 100, this.enemyteam);
                 }
                 else {
                     send_AoE(this.damage, this.x, 100, this.team);
-                    send_AoE(this.damage, this.x, 100, this.enemyteam);
+                    send_AoE(this.damage/2, this.x, 100, this.enemyteam);
                 }
             }
             gamectx.beginPath();
@@ -778,6 +836,11 @@ class fighter4{
             }
         }
     }
+    takedamage(take){
+        this.hp -= take;
+        this.taken += take;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
+    }
 }
 
 function send_a_damage(damage, frontenemy, enemys) {
@@ -797,8 +860,9 @@ function send_a_damage(damage, frontenemy, enemys) {
         }
     }
     else {
-        enemys[selecrandom].hp -= damage;
-        enemys[selecrandom].taken += damage;
+        let real_damage = damage - enemys[selecrandom].armor;
+        if (real_damage < 0) {real_damage = 0;}
+        enemys[selecrandom].takedamage(real_damage);
     }
 }
 
@@ -806,9 +870,10 @@ function send_AoE(damage, x, range, team, counter = false) {
     if (team == "M") {
         for (i = 0; i < enemyfighters.length; i++) {
             if (Math.abs(enemyfighters[i].x-x) <= range) {
-                enemyfighters[i].hp -= damage;
-                enemyfighters[i].taken += damage;
-                if (counter != false) {mydamages[counter] += damage;}
+                let real_damage = damage - enemyfighters[i].armor;
+                if (real_damage < 0) {real_damage = 0;}
+                enemyfighters[i].takedamage(real_damage);
+                if (counter != false) {mydamages[counter] += real_damage;}
             }
         }
         if (Math.abs(enemysummonpoint-x) <= range) {
@@ -822,8 +887,9 @@ function send_AoE(damage, x, range, team, counter = false) {
     else {
         for (i = 0; i < myfighters.length; i++) {
             if (Math.abs(myfighters[i].x-x) <= range) {
-                myfighters[i].hp -= damage;
-                myfighters[i].taken += damage;
+                let real_damage = damage - myfighters[i].armor;
+                if (real_damage < 0) {real_damage = 0;}
+                myfighters[i].takedamage(real_damage);
             }
         }
         if (Math.abs(350-x) <= range) {
@@ -839,13 +905,13 @@ function send_AoE(damage, x, range, team, counter = false) {
 function frontest() {
     my_frontest = [], enemy_frontest = [];
     myfront = 350, enemyfront = enemysummonpoint-50;
-    for (i = 0; i<myfighters.length; i++) {
+    for (i = 0; i < myfighters.length; i++) {
         if (myfighters[i].x > myfront) {myfront = myfighters[i].x, my_frontest = [i];}
         else if (myfighters[i].x == myfront) {my_frontest.push(i);}
     }
     if (myfront == 350) {my_frontest.push("MT");}
 
-    for (i = 0; i<enemyfighters.length; i++) {
+    for (i = 0; i < enemyfighters.length; i++) {
         if (enemyfighters[i].x < enemyfront) {enemyfront = enemyfighters[i].x, enemy_frontest = [i];}
         else if (enemyfighters[i].x == enemyfront) {enemy_frontest.push(i);}
     }
@@ -854,9 +920,11 @@ function frontest() {
 
 function cleanfighters() {
     let fighterscount = myfighters.length-1;
-    for (i = fighterscount; i>=0; i--) {if (myfighters[i].hp <= 0) {myfighters.splice(i, 1)}}
+    for (i = fighterscount; i >= 0; i--) {if (myfighters[i].hp <= 0) {myfighters.splice(i, 1)}}
     fighterscount = enemyfighters.length-1;
-    for (i = fighterscount; i>=0; i--) {if (enemyfighters[i].hp <= 0) {enemyfighters.splice(i, 1)}}
+    for (i = fighterscount; i >= 0; i--) {if (enemyfighters[i].hp <= 0) {enemyfighters.splice(i, 1)}}
+    fighterscount = dmg_numbers.length-1;
+    for (i = fighterscount; i >= 0; i--) {if (dmg_numbers[i].time <= 0) {dmg_numbers.splice(i, 1)}}
 }
 
 function control(x, y) {
@@ -990,6 +1058,7 @@ function drawgamecanvas() {
     frontest();
     myfighters.forEach(fighter => {fighter.run()})
     enemyfighters.forEach(fighter => {fighter.run()})
+    dmg_numbers.forEach(number => {number.run()})
 }
 
 function drawctrlcanvas() {
@@ -1118,7 +1187,7 @@ function rungame() {
         else if (randenemyFL == 4) {enemyfighters.push(new fighter4(enemysummonpoint, "E"));}
         else if (randenemyFL == 5) {enemyfighters.push(new fighter5(enemysummonpoint, "E"));}
         else if (randenemyFL == 6) {enemyfighters.push(new fighter6(enemysummonpoint, "E"));}
-        else {for (i=0; i<(2+Math.random()*8); i++) {enemyfighters.push(new fighter1(enemysummonpoint+(Math.random()-0.5)*10, "E"));}}
+        else {for (i = 0; i < (2+Math.random()*8); i++) {enemyfighters.push(new fighter1(enemysummonpoint+(Math.random()-0.5)*10, "E"));}}
     }
     drawgamecanvas();
     drawctrlcanvas();
@@ -1168,6 +1237,7 @@ function nextlevel() {
     my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
     damages = [0, 0];
     mydamages = [0, 0, 0, 0, 0, 0];
+    dmg_numbers = [];
     myfighters = [], enemyfighters = [];
     my_frontest = [], enemy_frontest = [];
     isgame = true;
