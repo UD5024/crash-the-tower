@@ -1079,7 +1079,7 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
         }
         if (Math.abs(enemysummonpoint-x) <= range) {
             enemy_tower_hp -= damage;
-            if (counter != false) {mydamages[counter] += real_damage;}
+            if (counter != false) {mydamages[counter] += damage;}
             if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
             if (enemy_tower_hp <= 0) {
                 enemy_tower_hp = 0;
