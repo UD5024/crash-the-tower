@@ -4,7 +4,7 @@ var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
 var isshowdamage = document.getElementById("subshowdamage");
-var level = 1;
+var level = 1+4;
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 20
@@ -1431,7 +1431,18 @@ function drawctrlcanvas() {
         ctrlctx.strokeText("LOCK", 693, 158);
         ctrlctx.closePath();
     }
-    if (level >= 5) {}
+    if (level >= 5) {
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#272727";
+        ctrlctx.moveTo(1100, 10);
+        ctrlctx.lineTo(1100, 266);
+        ctrlctx.moveTo(914, 60);
+        ctrlctx.lineTo(1050, 60);
+        ctrlctx.lineTo(1050, 266);
+        ctrlctx.stroke();
+        ctrlctx.fillRect(914, 60, 136, 206);
+        ctrlctx.closePath();
+    }
     else {
         ctrlctx.beginPath();
         ctrlctx.fillStyle = "#FF0000";
