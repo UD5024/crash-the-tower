@@ -883,7 +883,7 @@ class fighter5{
             gamectx.closePath();
             this.time--;
             if (this.time <= 0) {
-                myfighters.push(new fighter1(this.x-25, "M"));
+                myfighters.push(new fighter1(this.x-25, this.team));
                 this.time = 200;
             }
         }
