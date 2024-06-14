@@ -1652,13 +1652,15 @@ function drawctrlcanvas() {
     if (level >= 5) {
         ctrlctx.beginPath();
         ctrlctx.fillStyle = "#272727";
+        ctrlctx.fillRect(914, 60, 136, 206);
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
         ctrlctx.moveTo(1100, 10);
         ctrlctx.lineTo(1100, 266);
         ctrlctx.moveTo(914, 60);
         ctrlctx.lineTo(1050, 60);
         ctrlctx.lineTo(1050, 266);
         ctrlctx.stroke();
-        ctrlctx.fillRect(914, 60, 136, 206);
         ctrlctx.closePath();
     }
     else {
@@ -1668,7 +1670,31 @@ function drawctrlcanvas() {
         ctrlctx.strokeText("LOCK", 919, 158);
         ctrlctx.closePath();
     }
-    if (level >= 6) {}
+    if (level >= 6) {
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#9F5000";
+        ctrlctx.moveTo(1140, 70);
+        ctrlctx.lineTo(1250, 70);
+        ctrlctx.lineTo(1340, 180);
+        ctrlctx.lineTo(1300, 266);
+        ctrlctx.lineTo(1140, 266);
+        ctrlctx.fill();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.moveTo(1140, 70);
+        ctrlctx.lineTo(1250, 70);
+        ctrlctx.lineTo(1340, 180);
+        ctrlctx.lineTo(1300, 266);
+        ctrlctx.stroke();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#0080FF";
+        ctrlctx.moveTo(1200, 120);
+        ctrlctx.bezierCurveTo(1220, 180, 1220, 180, 1290, 180);
+        ctrlctx.bezierCurveTo(1300, 100, 1220, 110, 1200, 120);
+        ctrlctx.fill();
+        ctrlctx.closePath();
+    }
     else {
         ctrlctx.beginPath();
         ctrlctx.fillStyle = "#FF0000";
@@ -1676,7 +1702,6 @@ function drawctrlcanvas() {
         ctrlctx.strokeText("LOCK", 1145, 158);
         ctrlctx.closePath();
     }
-    ctrlctx.closePath();
 
     ctrlctx.beginPath();
     ctrlctx.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -1697,6 +1722,16 @@ function drawctrlcanvas() {
 }
 
 function rungame() {
+    if (level != 7) {reflashsummonenemy();}
+    drawgamecanvas();
+    drawctrlcanvas();
+    if (isgame == true) {setTimeout(function() {rungame();}, 10)}
+    else {
+        showmenu();
+    }
+}
+
+function reflashsummonenemy() {
     enemyCD--;
     if (enemyCD <= 0) {
         enemyCD = Math.floor(40+level*10+Math.random()*(level+4)*50);
@@ -1711,18 +1746,12 @@ function rungame() {
         else if (randenemyFL == 6) {enemyfighters.push(new fighter6(enemysummonpoint, "E"));}
         else {for (i = 0; i < (2+Math.random()*8); i++) {enemyfighters.push(new fighter1(enemysummonpoint+(Math.random()-0.5)*10, "E"));}}
     }
-    drawgamecanvas();
-    drawctrlcanvas();
-    if (isgame == true) {setTimeout(function() {rungame();}, 10)}
-    else {
-        showmenu();
-    }
 }
 
 function showmenu() {
     let inner_button = undefined;
     if ((my_tower_hp == 0)&&(level == 7)) {inner_button = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>復仇</p></button>'}
-    else if (my_tower_hp == 0) {inner_button = '<button onclick="location.reload()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>再試一次</p></button>'}
+    else if (my_tower_hp == 0) {inner_button = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>再試一次</p></button>'}
     else {inner_button = '<button onclick="nextlevel()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>下一關</p></button>'}
     menu.innerHTML = '<div id="submenu"></div>'+inner_button
     google.charts.load('current', {packages: ['corechart', 'bar']});
@@ -1752,22 +1781,26 @@ function startgame() {
 function nextlevel() {
     menu.style.display = "none";
     level += 1;
-    enemyCD = 0;
+    if (level != 7) {
+        enemyCD = 0;
+        damages = [0, 0];
+        mydamages = [0, 0, 0, 0, 0, 0];
+        dmg_numbers = [];
+        myfighters = [];
+        my_frontest = [], enemy_frontest = [];
+    }
+    enemyfighters = [];
     f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0;
     tower_hp = 25*(level+1);
     my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
     my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
-    damages = [0, 0];
-    mydamages = [0, 0, 0, 0, 0, 0];
-    dmg_numbers = [];
-    myfighters = [], enemyfighters = [];
-    my_frontest = [], enemy_frontest = [];
     isgame = true;
     rungame();
 }
 
 function retry() {
-    level--;
+    level -= 2;
+    if (level < 1) {level = 0;}
     enemysummonpoint = 2525;
     nextlevel();
 }
