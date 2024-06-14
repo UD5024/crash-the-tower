@@ -4,7 +4,7 @@ var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
 var isshowdamage = document.getElementById("subshowdamage");
-var level = 1+3;
+var level = 1;
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 20
@@ -76,7 +76,7 @@ class damagevisual{
         let rgbacolor = this.fontcolor+(0.5+(20-this.time)*0.025)+")";
         gamectx.beginPath();
         gamectx.fillStyle = rgbacolor;
-        gamectx.fillText(this.number, this.x-this.direction*(20-this.time), this.y);
+        gamectx.fillText(this.number, this.x-this.direction*(20-this.time)*1.5, this.y);
         gamectx.closePath();
         this.time--;
     }
@@ -855,11 +855,11 @@ class fighter5{
             this.direction = -1;
             this.weapon_color = "#FF0000";
         }
-        this.hp = 5;
-        this.block = 5;
+        this.hp = 1.5;
+        this.block = 1.5;
         this.taken = 0;
-        this.damage = 1;
-        this.armor = 0.05;
+        this.damage = 0;
+        this.armor = 0;
         this.action = 0;
         this.time = 0;
     }
@@ -872,7 +872,22 @@ class fighter5{
                 this.time = 30;
             }
         }
-        if (this.action == -2) {
+        if (this.action == -3) {
+            gamectx.beginPath();
+            gamectx.fillStyle = "#ffffff"
+            gamectx.fillRect(this.x+this.direction*(-230), 175, this.direction*230, 175);
+            gamectx.strokeRect(this.x+this.direction*(-230), 175, this.direction*230, 175);
+            gamectx.fillStyle = "#272727";
+            gamectx.fillRect(this.x+this.direction*(-145), 200, this.direction*120, 150);
+            gamectx.strokeRect(this.x+this.direction*(-145), 200, this.direction*120, 150);
+            gamectx.closePath();
+            this.time--;
+            if (this.time <= 0) {
+                myfighters.push(new fighter1(this.x-25, "M"));
+                this.time = 200;
+            }
+        }
+        else if (this.action == -2) {
             gamectx.beginPath();
             gamectx.fillStyle = "#ffffff"
             gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
@@ -884,22 +899,108 @@ class fighter5{
             if (this.time <= 0) {this.action = 0;}
         }
         else if (this.action == -1) {
+            if (this.time >= 120) {
+                gamectx.beginPath();
+                gamectx.fillStyle = "#ffffff";
+                gamectx.arc(this.x+this.direction*(-30), 235-3, 30, 0, Math.PI*2);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.fillStyle = this.weapon_color;
+                gamectx.moveTo(this.x+this.direction*(-65), 240-3);
+                gamectx.bezierCurveTo(this.x+this.direction*(-80), 185-3, this.x+this.direction*(20), 185-3, this.x+this.direction*(5), 240-3);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.moveTo(this.x+this.direction*(-30), 265-3);
+                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
+                gamectx.moveTo(this.x+this.direction*(10), 300-20-36+((this.time-180)/10)**2);
+                gamectx.lineTo(this.x+this.direction*(-20), 290-7.5-18+((this.time-180)/10)**2/2);
+                gamectx.lineTo(this.x+this.direction*(-30), 280-3);
+                gamectx.lineTo(this.x+this.direction*(-20), 300-7.5-18+((this.time-180)/10)**2/2);
+                gamectx.lineTo(this.x+this.direction*(10), 310-10-36+((this.time-180)/10)**2);
+                gamectx.moveTo(this.x+this.direction*(10), 350-36+((this.time-180)/10)**2);
+                gamectx.lineTo(this.x+this.direction*(10), 200-36+((this.time-180)/10)**2);
+                gamectx.moveTo(this.x+this.direction*(-10), 210-36+((this.time-180)/10)**2);
+                gamectx.lineTo(this.x+this.direction*(30), 210-36+((this.time-180)/10)**2);
+                gamectx.moveTo(this.x+this.direction*(-25), 230-36+((this.time-180)/10)**2);
+                gamectx.lineTo(this.x+this.direction*(45), 230-36+((this.time-180)/10)**2);
+                gamectx.moveTo(this.x+this.direction*(-25-8), 350);
+                gamectx.lineTo(this.x+this.direction*(-28-2), 320);
+                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
+                gamectx.lineTo(this.x+this.direction*(-32+2), 320);
+                gamectx.lineTo(this.x+this.direction*(-35+8), 350);
+                gamectx.stroke();
+                gamectx.closePath();
+            }
+            else {
+                gamectx.beginPath();
+                gamectx.fillStyle = "#ffffff";
+                gamectx.arc(this.x+this.direction*(-30), 235-3, 30, 0, Math.PI*2);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.fillStyle = this.weapon_color;
+                gamectx.moveTo(this.x+this.direction*(-65), 240-3);
+                gamectx.bezierCurveTo(this.x+this.direction*(-80), 185-3, this.x+this.direction*(20), 185-3, this.x+this.direction*(5), 240-3);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.moveTo(this.x+this.direction*(-30), 265-3);
+                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
+                gamectx.moveTo(this.x+this.direction*(10), 300-20);
+                gamectx.lineTo(this.x+this.direction*(-20), 290-7.5);
+                gamectx.lineTo(this.x+this.direction*(-30), 280-3);
+                gamectx.lineTo(this.x+this.direction*(-20), 300-7.5);
+                gamectx.lineTo(this.x+this.direction*(10), 310-10);
+                gamectx.moveTo(this.x+this.direction*(10), 350);
+                gamectx.lineTo(this.x+this.direction*(10), 200);
+                gamectx.moveTo(this.x+this.direction*(-10), 210);
+                gamectx.lineTo(this.x+this.direction*(30), 210);
+                gamectx.moveTo(this.x+this.direction*(-25), 230);
+                gamectx.lineTo(this.x+this.direction*(45), 230);
+                gamectx.moveTo(this.x+this.direction*(-25-8), 350);
+                gamectx.lineTo(this.x+this.direction*(-28-2), 320);
+                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
+                gamectx.lineTo(this.x+this.direction*(-32+2), 320);
+                gamectx.lineTo(this.x+this.direction*(-35+8), 350);
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.fillStyle = this.weapon_color;
+                gamectx.fillRect(this.x+this.direction*(9), 0, 2, 200);
+                gamectx.closePath();
+                if (this.time <= 40) {
+                    gamectx.beginPath();
+                    gamectx.fillStyle = "#ffffff"
+                    gamectx.fillRect(this.x+this.direction*(-230), 175-this.time*8.75, this.direction*230, 175);
+                    gamectx.strokeRect(this.x+this.direction*(-230), 175-this.time*8.75, this.direction*230, 175);
+                    gamectx.fillStyle = "#272727";
+                    gamectx.fillRect(this.x+this.direction*(-145), 200-this.time*8.75, this.direction*120, 150);
+                    gamectx.strokeRect(this.x+this.direction*(-145), 200-this.time*8.75, this.direction*120, 150);
+                    gamectx.closePath();
+                }
+            }
             this.time--;
-            if (this.time <= 0) {this.action = 3;}
+            if (this.time <= 0) {this.action = -3, this.time = 0, this.hp = 2, this.block = 2, this.taken = 0, this.armor = 0.5;}
         }
         else {
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x+this.direction*(-60), 235-Math.abs(this.action-30)/10);
-            gamectx.bezierCurveTo(this.x+this.direction*(-80), 180-Math.abs(this.action-30)/10, this.x+this.direction*(20), 180-Math.abs(this.action-30)/10, this.x, 235-Math.abs(this.action-30)/10);
+            gamectx.fillStyle = "#ffffff";
+            gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff";
-            gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 240-Math.abs(this.action-30)/10);
+            gamectx.bezierCurveTo(this.x+this.direction*(-80), 185-Math.abs(this.action-30)/10, this.x+this.direction*(20), 185-Math.abs(this.action-30)/10, this.x+this.direction*(5), 240-Math.abs(this.action-30)/10);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
@@ -911,8 +1012,12 @@ class fighter5{
             gamectx.lineTo(this.x+this.direction*(-30), 280-Math.abs(this.action-30)/10);
             gamectx.lineTo(this.x+this.direction*(-40), 300-Math.abs(this.action-30)/4);
             gamectx.lineTo(this.x+this.direction*(-30), 310-Math.abs(this.action-30)/3);
-            gamectx.moveTo(this.x+this.direction*(-50), 320-Math.abs(this.action-30)/3);
-            gamectx.lineTo(this.x, 295-Math.abs(this.action-30)/3);
+            gamectx.moveTo(this.x+this.direction*(-90), 340-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x+this.direction*(80), 255-Math.abs(this.action-30)/3);
+            gamectx.moveTo(this.x+this.direction*(60), 240-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x+this.direction*(80), 280-Math.abs(this.action-30)/3);
+            gamectx.moveTo(this.x+this.direction*(40), 240-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x+this.direction*(70), 300-Math.abs(this.action-30)/3);
             gamectx.moveTo(this.x+this.direction*(-25-Math.cos(Math.PI*this.action/30)*8), 350);
             gamectx.lineTo(this.x+this.direction*(-28-Math.cos(Math.PI*this.action/30)*2), 320);
             gamectx.lineTo(this.x+this.direction*(-30), 305-Math.abs(this.action-30)/10);
@@ -920,17 +1025,12 @@ class fighter5{
             gamectx.lineTo(this.x+this.direction*(-35+Math.cos(Math.PI*this.action/30)*8), 350);
             gamectx.stroke();
             gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x, 295-Math.abs(this.action-30)/3);
-            gamectx.lineTo(this.x, 295-Math.abs(this.action-30)/3);
-            gamectx.closePath();
             if (this.team == "M") {
-                if (enemyfront-this.x <= 500) {this.action = -1, this.time = 60;}
+                if (enemyfront-this.x <= 500) {this.action = -1, this.time = 180;}
                 else {this.x += 1.2;}
             }
             else {
-                if (this.x-myfront <= 500) {this.action = -1, this.time = 60;}
+                if (this.x-myfront <= 500) {this.action = -1, this.time = 180;}
                 else {this.x -= 1.2;}
             }
         }
@@ -946,6 +1046,7 @@ function send_a_damage(damage, frontenemy, enemys) {
     let selecrandom = frontenemy[Math.floor(Math.random()*frontenemy.length)];
     if (selecrandom == "MT") {
         my_tower_hp -= damage;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(myfront, damage, -1));}
         if (my_tower_hp <= 0) {
             my_tower_hp = 0;
             isgame = false;
@@ -953,6 +1054,7 @@ function send_a_damage(damage, frontenemy, enemys) {
     }
     else if (selecrandom == "ET") {
         enemy_tower_hp -= damage;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
         if (enemy_tower_hp <= 0) {
             enemy_tower_hp = 0;
             isgame = false;
@@ -977,6 +1079,8 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
         }
         if (Math.abs(enemysummonpoint-x) <= range) {
             enemy_tower_hp -= damage;
+            if (counter != false) {mydamages[counter] += real_damage;}
+            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
             if (enemy_tower_hp <= 0) {
                 enemy_tower_hp = 0;
                 isgame = false;
@@ -993,6 +1097,7 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
         }
         if (Math.abs(350-x) <= range) {
             my_tower_hp -= damage;
+            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(myfront, damage, -1));}
             if (my_tower_hp <= 0) {
                 my_tower_hp = 0;
                 isgame = false;
@@ -1033,7 +1138,6 @@ function cleanfighters() {
 }
 
 function control(x, y) {
-    myfighters.push(new fighter5(300, "M"));
     if ((x >= 10)&&(x <= 226)&&(y >= 10)&&(y <= 266)) {
         f1CT++;
         if (f1CT >= 5) {
