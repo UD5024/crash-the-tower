@@ -4,10 +4,10 @@ var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
 var isshowdamage = document.getElementById("subshowdamage");
-var level = 1;
+var level = 1+5;
 var chalist = [0];
 var enemyCD = 0;
-var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 20
+var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
 var tower_hp = 50;
 var my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
 var my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
@@ -1046,22 +1046,26 @@ class fighter5{
 class fighter6{
     constructor(x, team) {
         this.x = x;
+        this.xprime = x;
         this.team = team;
         if (this.team == "M") {
             this.direction = 1;
             this.weapon_color = "#0080FF";
+            this.body_color = "#9F5000";
         }
         else {
             this.direction = -1;
             this.weapon_color = "#FF0000";
+            this.body_color = "#28004D";
         }
-        this.hp = 5;
-        this.block = 4;
+        this.hp = 6;
+        this.block = 6;
         this.taken = 0;
-        this.damage = 1;
+        this.damage = 2.9;
         this.armor = 0;
         this.action = 0;
         this.time = 0;
+        this.timeprime = 0;
     }
     run(){
         if (this.taken >= this.block) {
@@ -1071,196 +1075,160 @@ class fighter6{
         }
         if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff";
-            gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-60), 240-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(10), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(15), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-20), 310-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-50), 310-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 330-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(-75), 320-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-120), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-90), 255-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.moveTo(this.x+this.direction*(-30), 265-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30), 305-56.25+((this.time-15)/2)**2);
-            gamectx.moveTo(this.x, 300-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-20), 290-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30), 280-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-50), 300-56.25+((this.time-15)/2)**2);
-            gamectx.moveTo(this.x+this.direction*(-25), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-28), 320-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30), 305-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-32), 320-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-35), 350-56.25+((this.time-15)/2)**2);
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-55), 215-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-15), 215-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(10), 245-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-15), 275-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-55), 275-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
             gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x+this.direction*(-50), 300-1.5);
-            gamectx.lineTo(this.x+this.direction*(-40), 300-1.5);
-            gamectx.lineTo(this.x+this.direction*(-55), 340-1.5);
-            gamectx.lineTo(this.x+this.direction*(-60), 300-1.5);
-            gamectx.lineTo(this.x+this.direction*(-50), 300-1.5);
+            gamectx.moveTo(this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
+            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x, 245-56.25+((this.time-15)/2)**2);
+            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 225-56.25+((this.time-15)/2)**2, this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
             gamectx.fill();
-            gamectx.lineTo(this.x+this.direction*(-48), 280-1.5);
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-25), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 295-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
-            this.x -= this.direction*2;
+            this.x -= this.direction*0.1;
             this.time--;
             if (this.time <= 0) {this.action = 0;}
         }
         else if (this.action == -1) {
-            if (this.time >= 90) {
-                gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff";
-                gamectx.arc(this.x+this.direction*(-30+((120-this.time)/4)**2), 232, 30, 0, Math.PI*2);
-                gamectx.fill();
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.moveTo(this.x+this.direction*(-30+((120-this.time)/4)**2), 265-3);
-                gamectx.lineTo(this.x+this.direction*(-30+((120-this.time)/4)**2), 305-3);
-                gamectx.moveTo(this.x+this.direction*(((120-this.time)/4)**2/1.5), 300-10);
-                gamectx.lineTo(this.x+this.direction*(-20+((120-this.time)/4)**2/1.5), 290-7.5);
-                gamectx.lineTo(this.x+this.direction*(-30+((120-this.time)/4)**2), 280-3);
-                gamectx.lineTo(this.x+this.direction*(-50+((120-this.time)/4)**2*2), 300-1.5);
-                gamectx.moveTo(this.x+this.direction*(-25-8+((120-this.time)/4)**2*1.2), 350);
-                gamectx.lineTo(this.x+this.direction*(-28-2+((120-this.time)/4)**2*1.25), 320);
-                gamectx.lineTo(this.x+this.direction*(-30+((120-this.time)/4)**2), 305-3);
-                gamectx.lineTo(this.x+this.direction*(-35+8), 350);
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.fillStyle = this.weapon_color;
-                gamectx.moveTo(this.x+this.direction*(-50+((120-this.time)/4)**2*2), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+((120-this.time)/4)**2*2), 290-1.5);
-                gamectx.lineTo(this.x+this.direction*(-10+((120-this.time)/4)**2*2), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+((120-this.time)/4)**2*2), 310-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+((120-this.time)/4)**2*2), 300-1.5);
-                gamectx.fill();
-                gamectx.lineTo(this.x+this.direction*(-70+((120-this.time)/4)**2*2), 300-1.5);
-                gamectx.stroke();
-                gamectx.closePath();
-            }
-            else if (this.time >= 60) {
-                if (this.time == 60) {
-                    if (this.team == "M") {if (enemyfront-this.x <= 90) {
-                        send_a_damage(this.damage, enemy_frontest, enemyfighters);
-                        mydamages[0] += this.damage;
-                    }}
-                    else {if (this.x-myfront <= 90) {send_a_damage(this.damage, my_frontest, myfighters);}}
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.arc(this.x+this.direction*(-50), 290, 60, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            if (this.team == "M") {
+                if (enemyfront-this.x <= 20) {
+                    send_AoE_dmg(this.damage, this.x, 250, this.team, 5);
+                    send_AoE_kb(this.x, 250, this.team);
+                    this.timeprime = 500;
+                    this.action = 0;
                 }
-                gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff";
-                gamectx.arc(this.x+this.direction*(-30+56.25), 232, 30, 0, Math.PI*2);
-                gamectx.fill();
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.moveTo(this.x+this.direction*(-30+56.25), 265-3);
-                gamectx.lineTo(this.x+this.direction*(-30+56.25), 305-3);
-                gamectx.moveTo(this.x+this.direction*(+37.5), 300-10);
-                gamectx.lineTo(this.x+this.direction*(-20+37.5), 290-7.5);
-                gamectx.lineTo(this.x+this.direction*(-30+56.25), 280-3);
-                gamectx.lineTo(this.x+this.direction*(-50+56.25*2), 300-1.5);
-                gamectx.moveTo(this.x+this.direction*(-25-8+56.25*1.2), 350);
-                gamectx.lineTo(this.x+this.direction*(-28-2+56.25*1.25), 320);
-                gamectx.lineTo(this.x+this.direction*(-30+56.25), 305-3);
-                gamectx.lineTo(this.x+this.direction*(-35+8), 350);
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.fillStyle = this.weapon_color;
-                gamectx.moveTo(this.x+this.direction*(-50+56.25*2), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+56.25*2), 290-1.5);
-                gamectx.lineTo(this.x+this.direction*(-10+56.25*2), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+56.25*2), 310-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50+56.25*2), 300-1.5);
-                gamectx.fill();
-                gamectx.lineTo(this.x+this.direction*(-70+56.25*2), 300-1.5);
-                gamectx.stroke();
-                gamectx.closePath();
+                else {this.x += 7.5;}
             }
             else {
-                gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff";
-                gamectx.arc(this.x+this.direction*(-30), 232, 30, 0, Math.PI*2);
-                gamectx.fill();
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.moveTo(this.x+this.direction*(-30), 265-3);
-                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
-                gamectx.moveTo(this.x, 300-10);
-                gamectx.lineTo(this.x+this.direction*(-20), 290-7.5);
-                gamectx.lineTo(this.x+this.direction*(-30), 280-3);
-                gamectx.lineTo(this.x+this.direction*(-50), 300-1.5);
-                gamectx.moveTo(this.x+this.direction*(-25-8), 350);
-                gamectx.lineTo(this.x+this.direction*(-28-2), 320);
-                gamectx.lineTo(this.x+this.direction*(-30), 305-3);
-                gamectx.lineTo(this.x+this.direction*(-32+2), 320);
-                gamectx.lineTo(this.x+this.direction*(-35+8), 350);
-                gamectx.stroke();
-                gamectx.closePath();
-                gamectx.beginPath();
-                gamectx.fillStyle = this.weapon_color;
-                gamectx.moveTo(this.x+this.direction*(-50), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-40), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-55), 340-1.5);
-                gamectx.lineTo(this.x+this.direction*(-60), 300-1.5);
-                gamectx.lineTo(this.x+this.direction*(-50), 300-1.5);
-                gamectx.fill();
-                gamectx.lineTo(this.x+this.direction*(-48), 280-1.5);
-                gamectx.stroke();
-                gamectx.closePath();
+                if (this.x-myfront <= 20) {
+                    send_AoE_dmg(this.damage, this.x, 250, this.team);
+                    send_AoE_kb(this.x, 250, this.team);
+                    this.timeprime = 500;
+                    this.action = 0;
+                }
+                else {this.x -= 7.5;}
             }
-            this.time--;
-            if (this.time <= 0) {this.action = 0;}
         }
         else {
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff";
-            gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-60), 240-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(10), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(15), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-30), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-20), 310-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-50), 310-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-80), 330-Math.abs(this.action-30)/40);
+            gamectx.moveTo(this.x+this.direction*(-75), 320-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-120), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-90), 255-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.moveTo(this.x+this.direction*(-30), 265-Math.abs(this.action-30)/10);
-            gamectx.lineTo(this.x+this.direction*(-30), 305-Math.abs(this.action-30)/10);
-            gamectx.moveTo(this.x, 300-Math.abs(this.action-30)/3);
-            gamectx.lineTo(this.x+this.direction*(-20), 290-Math.abs(this.action-30)/4);
-            gamectx.lineTo(this.x+this.direction*(-30), 280-Math.abs(this.action-30)/10);
-            gamectx.lineTo(this.x+this.direction*(-50), 300-Math.abs(this.action-30)/20);
-            gamectx.moveTo(this.x+this.direction*(-25-Math.cos(Math.PI*this.action/30)*8), 350);
-            gamectx.lineTo(this.x+this.direction*(-28-Math.cos(Math.PI*this.action/30)*2), 320);
-            gamectx.lineTo(this.x+this.direction*(-30), 305-Math.abs(this.action-30)/10);
-            gamectx.lineTo(this.x+this.direction*(-32+Math.cos(Math.PI*this.action/30)*2), 320);
-            gamectx.lineTo(this.x+this.direction*(-35+Math.cos(Math.PI*this.action/30)*8), 350);
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-55), 215+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-15), 215+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(10), 245+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-15), 275+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-55), 275+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
+            gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
             gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x+this.direction*(-50), 300-Math.abs(this.action-30)/20);
-            gamectx.lineTo(this.x+this.direction*(-40), 300-Math.abs(this.action-30)/20);
-            gamectx.lineTo(this.x+this.direction*(-55), 340-Math.abs(this.action-30)/20);
-            gamectx.lineTo(this.x+this.direction*(-60), 300-Math.abs(this.action-30)/20);
-            gamectx.lineTo(this.x+this.direction*(-50), 300-Math.abs(this.action-30)/20);
+            gamectx.moveTo(this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
+            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x, 245+Math.abs(this.action-30)/40);
+            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 225+Math.abs(this.action-30)/40, this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
             gamectx.fill();
-            gamectx.lineTo(this.x+this.direction*(-48), 280-Math.abs(this.action-30)/20);
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-25), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-30), 295-Math.abs(this.action-30)/40);
+            gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
-            if (this.team == "M") {
-                if (enemyfront-this.x <= 90) {this.action = -1, this.time = 120;}
-                else {this.x += 1.2;}
-            }
+            this.timeprime--;
+            if (this.timeprime <= 0) {this.action = -1;}
             else {
-                if (this.x-myfront <= 90) {this.action = -1, this.time = 120;}
-                else {this.x -= 1.2;}
+                if (this.team == "M") {
+                    if (enemyfront-this.x <= 20) {this.action = 0;}
+                    else {this.x += 0.1;}
+                }
+                else {
+                    if (this.x-myfront <= 20) {this.action = 0;}
+                    else {this.x -= 0.1;}
+                }
             }
         }
     }
     takedamage(take){
-        this.hp -= take;
-        this.taken += take;
-        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
+        this.hp -= take/10;
+        this.taken += take/10;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take/10, this.direction));}
     }
 }
 
@@ -1398,7 +1366,7 @@ function control(x, y) {
     }
     if ((x >= 1140)&&(x <= 1356)&&(y >= 10)&&(y <= 266)&&(level >= 6)) {
         f6CT++;
-        if (f6CT >= 20) {
+        if (f6CT >= 30) {
             myfighters.push(new fighter6(300, "M"));
             f6CT = 0;
         }
@@ -1690,7 +1658,7 @@ function drawctrlcanvas() {
     ctrlctx.fillRect(462, 10, 216, 256-256*f3CT/10);
     ctrlctx.fillRect(688, 10, 216, 256-256*f4CT/15);
     ctrlctx.fillRect(914, 10, 216, 256-256*f5CT/15);
-    ctrlctx.fillRect(1140, 10, 216, 256-256*f6CT/20);
+    ctrlctx.fillRect(1140, 10, 216, 256-256*f6CT/30);
     ctrlctx.closePath();
     f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;
     if (f1CT < 0) {f1CT = 0;}
@@ -1738,7 +1706,7 @@ function showmenu() {
 function drawBasic() {
     var data = new google.visualization.arrayToDataTable([
         ['Name', 'Value'],
-        ['大劍', mydamages[0]], ['突突突',  mydamages[1]], ['勢不可擋',  mydamages[2]], ['碰己雷金大聲',  mydamages[3]], ['地球水電工',  mydamages[4]],['我誰',  mydamages[5]]]);
+        ['大劍', mydamages[0]], ['突突突',  mydamages[1]], ['勢不可擋',  mydamages[2]], ['碰己雷金大聲',  mydamages[3]], ['地球水電工',  mydamages[4]],['睿智的化身',  mydamages[5]]]);
     var options = {
         title: '角色傷害表',
         hAxis: { title: 'Name'},
