@@ -1705,6 +1705,7 @@ function rungame() {
     enemyCD--;
     if (enemyCD <= 0) {
         enemyCD = Math.floor(50+Math.random()*(level+4)*50);
+        if (level >= 5) {enemyCD -= Math.random()*(3-level)*50}
         let randenemyFL = Math.floor(Math.random()*(level)+1);
         if (randenemyFL == 1) {enemyfighters.push(new fighter1(2525, "E"));}
         else if (randenemyFL == 2) {enemyfighters.push(new fighter2(enemysummonpoint, "E"));}
