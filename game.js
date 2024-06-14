@@ -1705,8 +1705,9 @@ function rungame() {
     enemyCD--;
     if (enemyCD <= 0) {
         enemyCD = Math.floor(50+Math.random()*(level+4)*50);
-        if (level >= 5) {enemyCD -= Math.random()*(3-level)*50}
-        let randenemyFL = Math.floor(Math.random()*(level)+1);
+        if (level >= 5) {enemyCD -= Math.random()*(6-level)*50}
+        let randenemyFL = Math.floor(Math.random()*(level+1)+1);
+        if (randenemyFL > level) {randenemyFL = level;}
         if (randenemyFL == 1) {enemyfighters.push(new fighter1(2525, "E"));}
         else if (randenemyFL == 2) {enemyfighters.push(new fighter2(enemysummonpoint, "E"));}
         else if (randenemyFL == 3) {enemyfighters.push(new fighter3(enemysummonpoint, "E"));}
