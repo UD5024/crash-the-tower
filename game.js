@@ -890,9 +890,37 @@ class fighter5{
         }
         else if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
             gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 240-56.25+((this.time-15)/2)**2);
+            gamectx.bezierCurveTo(this.x+this.direction*(-80), 185-56.25+((this.time-15)/2)**2, this.x+this.direction*(20), 185-56.25+((this.time-15)/2)**2, this.x+this.direction*(5), 240-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.moveTo(this.x+this.direction*(-30), 265-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 305-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(-10), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-20), 290-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 280-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-40), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 310-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(-90), 340-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(80), 255-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(60), 240-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(80), 280-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(40), 240-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(70), 300-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(-25-8), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-28-2), 320-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 305-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-32+2), 320-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-35+8), 350-56.25+((this.time-15)/2)**2);
             gamectx.stroke();
             gamectx.closePath();
             this.x -= this.direction*2;
@@ -1231,7 +1259,6 @@ class fighter6{
         if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take/10, this.direction));}
     }
 }
-
 
 function send_a_damage(damage, frontenemy, enemys) {
     let selecrandom = frontenemy[Math.floor(Math.random()*frontenemy.length)];
