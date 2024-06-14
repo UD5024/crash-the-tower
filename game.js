@@ -110,7 +110,7 @@ class fighter1{
         }
         if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -147,7 +147,7 @@ class fighter1{
         else if (this.action == -1) {
             if (this.time >= 90) {
                 gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff"
+                gamectx.fillStyle = "#ffffff";
                 gamectx.arc(this.x+this.direction*(-30+((120-this.time)/4)**2), 232, 30, 0, Math.PI*2);
                 gamectx.fill();
                 gamectx.stroke();
@@ -186,7 +186,7 @@ class fighter1{
                     else {if (this.x-myfront <= 90) {send_a_damage(this.damage, my_frontest, myfighters);}}
                 }
                 gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff"
+                gamectx.fillStyle = "#ffffff";
                 gamectx.arc(this.x+this.direction*(-30+56.25), 232, 30, 0, Math.PI*2);
                 gamectx.fill();
                 gamectx.stroke();
@@ -218,7 +218,7 @@ class fighter1{
             }
             else {
                 gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff"
+                gamectx.fillStyle = "#ffffff";
                 gamectx.arc(this.x+this.direction*(-30), 232, 30, 0, Math.PI*2);
                 gamectx.fill();
                 gamectx.stroke();
@@ -256,7 +256,7 @@ class fighter1{
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -331,7 +331,7 @@ class fighter2{
         }
         if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -376,7 +376,7 @@ class fighter2{
                 }}
                 else {if (this.x-myfront <= 200) {send_a_damage(this.damage, my_frontest, myfighters);}}
                 gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff"
+                gamectx.fillStyle = "#ffffff";
                 gamectx.arc(this.x+this.direction*(-30), 235-3, 30, 0, Math.PI*2);
                 gamectx.fill();
                 gamectx.stroke();
@@ -425,7 +425,7 @@ class fighter2{
             }
             else {
                 gamectx.beginPath();
-                gamectx.fillStyle = "#ffffff"
+                gamectx.fillStyle = "#ffffff";
                 gamectx.arc(this.x+this.direction*(-30), 235-3, 30, 0, Math.PI*2);
                 gamectx.fill();
                 gamectx.stroke();
@@ -467,7 +467,7 @@ class fighter2{
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -546,13 +546,13 @@ class fighter3{
         }
         if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.moveTo(this.x, 285);
             gamectx.lineTo(this.x+this.direction*(-30), 285);
             gamectx.lineTo(this.x+this.direction*(-40), 290);
@@ -581,7 +581,7 @@ class fighter3{
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.moveTo(this.x+this.direction*(-10), 297);
             gamectx.lineTo(this.x+this.direction*(5), 307);
             gamectx.lineTo(this.x+this.direction*(-10), 317);
@@ -613,13 +613,13 @@ class fighter3{
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/25, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.moveTo(this.x, 285);
             gamectx.lineTo(this.x+this.direction*(-30), 285);
             gamectx.lineTo(this.x+this.direction*(-40), 290);
@@ -648,7 +648,7 @@ class fighter3{
             gamectx.stroke();
             gamectx.closePath();
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.moveTo(this.x+this.direction*(-10), 297);
             gamectx.lineTo(this.x+this.direction*(5), 307);
             gamectx.lineTo(this.x+this.direction*(-10), 317);
@@ -732,7 +732,7 @@ class fighter4{
         }
         if (this.action == -2) {
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 225-112.5+((this.time-15)/2)**2*2, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -768,12 +768,12 @@ class fighter4{
             this.hp = my_tower_hp;
             if (this.time == 30) {
                 if (this.team == "M") {
-                    send_AoE(this.damage, this.x, 100, this.team, 3);
-                    send_AoE(this.damage/2, this.x, 100, this.enemyteam);
+                    send_AoE_dmg(this.damage, this.x, 100, this.team, 3);
+                    send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);
                 }
                 else {
-                    send_AoE(this.damage, this.x, 100, this.team);
-                    send_AoE(this.damage/2, this.x, 100, this.enemyteam);
+                    send_AoE_dmg(this.damage, this.x, 100, this.team);
+                    send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);
                 }
             }
             gamectx.beginPath();
@@ -791,7 +791,7 @@ class fighter4{
             this.action++;
             if (this.action > 60) {this.action = 0;}
             gamectx.beginPath();
-            gamectx.fillStyle = "#ffffff"
+            gamectx.fillStyle = "#ffffff";
             gamectx.arc(this.x+this.direction*(-30), 225-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
             gamectx.fill();
             gamectx.stroke();
@@ -843,6 +843,105 @@ class fighter4{
     }
 }
 
+class fighter5{
+    constructor(x, team) {
+        this.x = x;
+        this.team = team;
+        if (this.team == "M") {
+            this.direction = 1;
+            this.weapon_color = "#0080FF";
+        }
+        else {
+            this.direction = -1;
+            this.weapon_color = "#FF0000";
+        }
+        this.hp = 5;
+        this.block = 5;
+        this.taken = 0;
+        this.damage = 1;
+        this.armor = 0.05;
+        this.action = 0;
+        this.time = 0;
+    }
+    run(){
+        if (this.taken >= this.block) {
+            if (this.action = -3) {this.hp =0;}
+            else {
+                this.action = -2;
+                this.taken = 0;
+                this.time = 30;
+            }
+        }
+        if (this.action == -2) {
+            gamectx.beginPath();
+            gamectx.fillStyle = "#ffffff"
+            gamectx.arc(this.x+this.direction*(-30), 235-56.25+((this.time-15)/2)**2, 30, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            this.x -= this.direction*2;
+            this.time--;
+            if (this.time <= 0) {this.action = 0;}
+        }
+        else if (this.action == -1) {
+            this.time--;
+            if (this.time <= 0) {this.action = 3;}
+        }
+        else {
+            this.action++;
+            if (this.action > 60) {this.action = 0;}
+            gamectx.beginPath();
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x+this.direction*(-60), 235-Math.abs(this.action-30)/10);
+            gamectx.bezierCurveTo(this.x+this.direction*(-80), 180-Math.abs(this.action-30)/10, this.x+this.direction*(20), 180-Math.abs(this.action-30)/10, this.x, 235-Math.abs(this.action-30)/10);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#ffffff";
+            gamectx.arc(this.x+this.direction*(-30), 235-Math.abs(this.action-30)/10, 30, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.moveTo(this.x+this.direction*(-30), 265-Math.abs(this.action-30)/10);
+            gamectx.lineTo(this.x+this.direction*(-30), 305-Math.abs(this.action-30)/10);
+            gamectx.moveTo(this.x+this.direction*(-10), 300-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x+this.direction*(-20), 290-Math.abs(this.action-30)/4);
+            gamectx.lineTo(this.x+this.direction*(-30), 280-Math.abs(this.action-30)/10);
+            gamectx.lineTo(this.x+this.direction*(-40), 300-Math.abs(this.action-30)/4);
+            gamectx.lineTo(this.x+this.direction*(-30), 310-Math.abs(this.action-30)/3);
+            gamectx.moveTo(this.x+this.direction*(-50), 320-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x, 295-Math.abs(this.action-30)/3);
+            gamectx.moveTo(this.x+this.direction*(-25-Math.cos(Math.PI*this.action/30)*8), 350);
+            gamectx.lineTo(this.x+this.direction*(-28-Math.cos(Math.PI*this.action/30)*2), 320);
+            gamectx.lineTo(this.x+this.direction*(-30), 305-Math.abs(this.action-30)/10);
+            gamectx.lineTo(this.x+this.direction*(-32+Math.cos(Math.PI*this.action/30)*2), 320);
+            gamectx.lineTo(this.x+this.direction*(-35+Math.cos(Math.PI*this.action/30)*8), 350);
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x, 295-Math.abs(this.action-30)/3);
+            gamectx.lineTo(this.x, 295-Math.abs(this.action-30)/3);
+            gamectx.closePath();
+            if (this.team == "M") {
+                if (enemyfront-this.x <= 500) {this.action = -1, this.time = 60;}
+                else {this.x += 1.2;}
+            }
+            else {
+                if (this.x-myfront <= 500) {this.action = -1, this.time = 60;}
+                else {this.x -= 1.2;}
+            }
+        }
+    }
+    takedamage(take){
+        this.hp -= take;
+        this.taken += take;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take, this.direction));}
+    }
+}
+
 function send_a_damage(damage, frontenemy, enemys) {
     let selecrandom = frontenemy[Math.floor(Math.random()*frontenemy.length)];
     if (selecrandom == "MT") {
@@ -866,7 +965,7 @@ function send_a_damage(damage, frontenemy, enemys) {
     }
 }
 
-function send_AoE(damage, x, range, team, counter = false) {
+function send_AoE_dmg(damage, x, range, team, counter = false) {
     if (team == "M") {
         for (i = 0; i < enemyfighters.length; i++) {
             if (Math.abs(enemyfighters[i].x-x) <= range) {
@@ -902,6 +1001,12 @@ function send_AoE(damage, x, range, team, counter = false) {
     }
 }
 
+function send_AoE_kb(x, range, team){
+    if (team == "M") {
+        for (i = 0; i < enemyfighters.length; i++) {if (Math.abs(enemyfighters[i].x-x) <= range) {enemyfighters[i].taken = enemyfighters[i].block;}}}
+    else {for (i = 0; i < myfighters.length; i++) {if (Math.abs(myfighters[i].x-x) <= range) {myfighters[i].taken = myfighters[i].block;}}}
+}
+
 function frontest() {
     my_frontest = [], enemy_frontest = [];
     myfront = 350, enemyfront = enemysummonpoint-50;
@@ -928,6 +1033,7 @@ function cleanfighters() {
 }
 
 function control(x, y) {
+    myfighters.push(new fighter5(300, "M"));
     if ((x >= 10)&&(x <= 226)&&(y >= 10)&&(y <= 266)) {
         f1CT++;
         if (f1CT >= 5) {
@@ -1124,7 +1230,50 @@ function drawctrlcanvas() {
         ctrlctx.strokeText("LOCK", 241, 158);
         ctrlctx.closePath();
     }
-    if (level >= 3) {}
+    if (level >= 3) {
+        ctrlctx.beginPath();
+        ctrlctx.arc(570, 10, 100, 0, Math.PI*3/2);
+        ctrlctx.moveTo(570, 110);
+        ctrlctx.lineTo(570, 140);
+        ctrlctx.moveTo(470, 130);
+        ctrlctx.lineTo(515, 115);
+        ctrlctx.lineTo(570, 120);
+        ctrlctx.lineTo(625, 115);
+        ctrlctx.lineTo(670, 130);
+        ctrlctx.stroke();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#0080FF";
+        ctrlctx.moveTo(462, 266);
+        ctrlctx.lineTo(462, 120);
+        ctrlctx.lineTo(480, 140);
+        ctrlctx.lineTo(660, 140);
+        ctrlctx.lineTo(678, 120);
+        ctrlctx.lineTo(678, 266);
+        ctrlctx.fill();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#ffffff";
+        ctrlctx.moveTo(475, 160);
+        ctrlctx.lineTo(520, 205);
+        ctrlctx.lineTo(565, 160);
+        ctrlctx.moveTo(575, 160);
+        ctrlctx.lineTo(620, 205);
+        ctrlctx.lineTo(665, 160);
+        ctrlctx.moveTo(475, 215);
+        ctrlctx.lineTo(520, 260);
+        ctrlctx.lineTo(565, 215);
+        ctrlctx.moveTo(575, 215);
+        ctrlctx.lineTo(620, 260);
+        ctrlctx.lineTo(665, 215);
+        ctrlctx.fill();
+        ctrlctx.moveTo(462, 120);
+        ctrlctx.lineTo(480, 140);
+        ctrlctx.lineTo(660, 140);
+        ctrlctx.lineTo(678, 120);
+        ctrlctx.stroke();
+        ctrlctx.closePath();
+    }
     else {
         ctrlctx.beginPath();
         ctrlctx.fillStyle = "#FF0000";
@@ -1132,7 +1281,45 @@ function drawctrlcanvas() {
         ctrlctx.strokeText("LOCK", 467, 158);
         ctrlctx.closePath();
     }
-    if (level >= 4) {}
+    if (level >= 4) {
+        ctrlctx.beginPath();
+        ctrlctx.arc(688, 10, 100, 0, Math.PI*1/2);
+        ctrlctx.moveTo(715, 106);
+        ctrlctx.lineTo(775, 176);
+        ctrlctx.moveTo(735, 130);
+        ctrlctx.lineTo(800, 65);
+        ctrlctx.moveTo(735, 130);
+        ctrlctx.lineTo(770, 145);
+        ctrlctx.lineTo(820, 145);
+        ctrlctx.stroke();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.fillStyle = "#0080FF";
+        ctrlctx.moveTo(700, 266);
+        ctrlctx.lineTo(688, 256);
+        ctrlctx.lineTo(688, 236);
+        ctrlctx.lineTo(718, 236);
+        ctrlctx.lineTo(851, 103);
+        ctrlctx.lineTo(904, 119);
+        ctrlctx.lineTo(904, 221);
+        ctrlctx.lineTo(860, 266);
+        ctrlctx.fill();
+        ctrlctx.closePath();
+        ctrlctx.beginPath();
+        ctrlctx.moveTo(700, 266);
+        ctrlctx.lineTo(688, 256);
+        ctrlctx.moveTo(688, 236);
+        ctrlctx.lineTo(718, 236);
+        ctrlctx.lineTo(851, 103);
+        ctrlctx.lineTo(904, 119);
+        ctrlctx.moveTo(904, 221);
+        ctrlctx.lineTo(860, 266);
+        ctrlctx.moveTo(775, 176);
+        ctrlctx.lineTo(840, 176);
+        ctrlctx.lineTo(825, 250);
+        ctrlctx.stroke();
+        ctrlctx.closePath();
+    }
     else {
         ctrlctx.beginPath();
         ctrlctx.fillStyle = "#FF0000";
