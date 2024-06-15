@@ -1733,12 +1733,12 @@ function draw_tower() {
         gamectx.beginPath();
         for (i = 0; i <= 1; i += 0.01) {
             gamectx.fillStyle = "RGBA(255, 0, 0, "+i/10+")";
-            gamectx.fillText("BOSS", window.scrollX+window.innerWidth*0.5-30+10*(1-i)-Math.sin(Math.PI*L7BOSS_name_time/120), 375+Math.sin(Math.PI*L7BOSS_name_time/60)-10*(1-i));
+            gamectx.fillText("BOSS-「跟不上節奏的龍脊巨怪」", window.scrollX+window.innerWidth*0.5-220+10*(1-i)-Math.sin(Math.PI*L7BOSS_name_time/120), 375+Math.sin(Math.PI*L7BOSS_name_time/60)-10*(1-i));
         }
         gamectx.closePath();
         gamectx.beginPath();
         gamectx.fillStyle = "#000000";
-        gamectx.fillText("BOSS", window.scrollX+window.innerWidth*0.5-30, 375);
+        gamectx.fillText("BOSS-「跟不上節奏的龍脊巨怪」", window.scrollX+window.innerWidth*0.5-220, 375);
         gamectx.fillRect(window.scrollX+window.innerWidth*0.0625, 380, window.innerWidth*0.29, 20);
         gamectx.fillRect(window.scrollX+window.innerWidth*0.355, 380, window.innerWidth*0.29, 20);
         gamectx.fillRect(window.scrollX+window.innerWidth*0.6475, 380, window.innerWidth*0.29, 20);
