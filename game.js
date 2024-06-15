@@ -20,6 +20,7 @@ var my_frontest = [], enemy_frontest = [];
 var myfront = 350, enemyfront = 2475;
 var enemysummonpoint = 2525;
 var is_dmg_visual = "Off";
+var window_x_scroll = 0, scroll_counter = 0;
 
 let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
 let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
@@ -1260,6 +1261,194 @@ class fighter6{
     }
 }
 
+class boss{
+    constructor() {this.remake()}
+    remake(){
+        this.hp = 2000;
+        this.block = 6;
+        this.taken = 0;
+        this.damage = 2.9;
+        this.armor = 0;
+        this.armor = 0;
+        this.shield = 100;
+        this.action = 0;
+        this.attackcount = 0;
+        this.time = 0;
+        this.timeprime = 0;
+        this.show_color = "#FF0000";
+        this.body_color = "#28004D";
+        this.subbody_color = "#3A006F";
+    }
+    run(){
+        if (this.taken >= this.block) {
+            this.action = -2;
+            this.taken = 0;
+            this.time = 30;
+        }
+        if (this.action == -2) {
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-60), 240-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(10), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(15), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-20), 310-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-50), 310-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 330-56.25+((this.time-15)/2)**2);
+            gamectx.moveTo(this.x+this.direction*(-75), 320-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-120), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-90), 255-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-55), 215-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-15), 215-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(10), 245-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-15), 275-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-55), 275-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
+            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x, 245-56.25+((this.time-15)/2)**2);
+            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 225-56.25+((this.time-15)/2)**2, this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 300-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-25), 330-56.25+((this.time-15)/2)**2);
+            gamectx.lineTo(this.x+this.direction*(-30), 295-56.25+((this.time-15)/2)**2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            this.x -= this.direction*0.1;
+            this.time--;
+            if (this.time <= 0) {this.action = 0;}
+        }
+        else if (this.action == -1) {
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.arc(this.x+this.direction*(-50), 290, 60, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            if (this.team == "M") {
+                if (enemyfront-this.x <= 20) {
+                    send_AoE_dmg(this.damage, this.x, 250, this.team, 5);
+                    send_AoE_kb(this.x, 250, this.team);
+                    this.timeprime = 500;
+                    this.action = 0;
+                }
+                else {this.x += 7.5;}
+            }
+            else {
+                if (this.x-myfront <= 20) {
+                    send_AoE_dmg(this.damage, this.x, 250, this.team);
+                    send_AoE_kb(this.x, 250, this.team);
+                    this.timeprime = 500;
+                    this.action = 0;
+                }
+                else {this.x -= 7.5;}
+            }
+        }
+        else {
+            this.action++;
+            if (this.action > 60) {this.action = 0;}
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-60), 240-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(10), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(15), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-30), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-20), 310-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-50), 310-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350);
+            gamectx.lineTo(this.x+this.direction*(-80), 330-Math.abs(this.action-30)/40);
+            gamectx.moveTo(this.x+this.direction*(-75), 320-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-120), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-90), 255-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-55), 215+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-15), 215+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(10), 245+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-15), 275+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-55), 275+Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.weapon_color;
+            gamectx.moveTo(this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
+            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x, 245+Math.abs(this.action-30)/40);
+            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 225+Math.abs(this.action-30)/40, this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
+            gamectx.fill();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = this.body_color;
+            gamectx.moveTo(this.x+this.direction*(-65), 300-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350);
+            gamectx.lineTo(this.x+this.direction*(-25), 330-Math.abs(this.action-30)/40);
+            gamectx.lineTo(this.x+this.direction*(-30), 295-Math.abs(this.action-30)/40);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            this.timeprime--;
+            if (this.timeprime <= 0) {this.action = -1;}
+            else {
+                if (this.team == "M") {
+                    if (enemyfront-this.x <= 20) {this.action = 0;}
+                    else {this.x += 0.1;}
+                }
+                else {
+                    if (this.x-myfront <= 20) {this.action = 0;}
+                    else {this.x -= 0.1;}
+                }
+            }
+        }
+    }
+    takedamage(take){
+        if (this.shield > 0) {this.shield -= take}
+        else {
+            this.hp -= take;
+            this.taken += take;
+            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take/10, -1));}
+        }
+    }
+}
+
+var finaleboss = new boss();
+
 function send_a_damage(damage, frontenemy, enemys) {
     let selecrandom = frontenemy[Math.floor(Math.random()*frontenemy.length)];
     if (selecrandom == "MT") {
@@ -1271,11 +1460,22 @@ function send_a_damage(damage, frontenemy, enemys) {
         }
     }
     else if (selecrandom == "ET") {
-        enemy_tower_hp -= damage;
-        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
-        if (enemy_tower_hp <= 0) {
-            enemy_tower_hp = 0;
-            isgame = false;
+        if (level == 7) {
+            let real_damage = damage - finaleboss.armor;
+            if (real_damage < 0) {real_damage = 0;}
+            finaleboss.takedamage(real_damage);
+            if (finaleboss.hp <= 0) {
+                finaleboss.hp = 0;
+                isgame = false;
+            }
+        }
+        else {
+            enemy_tower_hp -= damage;
+            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
+            if (enemy_tower_hp <= 0) {
+                enemy_tower_hp = 0;
+                isgame = false;
+            }
         }
     }
     else {
@@ -1296,12 +1496,24 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
             }
         }
         if (Math.abs(enemysummonpoint-x) <= range) {
-            enemy_tower_hp -= damage;
-            if (counter != false) {mydamages[counter] += damage;}
-            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
-            if (enemy_tower_hp <= 0) {
-                enemy_tower_hp = 0;
-                isgame = false;
+            if (level == 7) {
+                let real_damage = damage - finaleboss.armor;
+                if (real_damage < 0) {real_damage = 0;}
+                if (counter != false) {mydamages[counter] += real_damage;}
+                finaleboss.takedamage(real_damage);
+                if (finaleboss.hp <= 0) {
+                    finaleboss.hp = 0;
+                    isgame = false;
+                }
+            }
+            else {
+                enemy_tower_hp -= damage;
+                if (counter != false) {mydamages[counter] += damage;}
+                if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemyfront, damage, 1));}
+                if (enemy_tower_hp <= 0) {
+                    enemy_tower_hp = 0;
+                    isgame = false;
+                }
             }
         }
     }
@@ -1356,47 +1568,38 @@ function cleanfighters() {
 }
 
 function control(x, y) {
-    if ((x >= 10)&&(x <= 226)&&(y >= 10)&&(y <= 266)) {
-        f1CT++;
-        if (f1CT >= 5) {
-            myfighters.push(new fighter1(300, "M"));
-            f1CT = 0;
-        }
+    if ((x >= 10)&&(x <= 226)&&(y >= 10)&&(y <= 266)) {f1CT++;}
+    if ((x >= 236)&&(x <= 452)&&(y >= 10)&&(y <= 266)&&(level >= 2)) {f2CT++;}
+    if ((x >= 462)&&(x <= 678)&&(y >= 10)&&(y <= 266)&&(level >= 3)) {f3CT++;}
+    if ((x >= 688)&&(x <= 904)&&(y >= 10)&&(y <= 266)&&(level >= 4)) {f4CT++;}
+    if ((x >= 914)&&(x <= 1130)&&(y >= 10)&&(y <= 266)&&(level >= 5)) {f5CT++;}
+    if ((x >= 1140)&&(x <= 1356)&&(y >= 10)&&(y <= 266)&&(level >= 6)) {f6CT++;}
+}
+
+function summon_my_fighter() {
+    if (f1CT >= 5) {
+        myfighters.push(new fighter1(300, "M"));
+        f1CT = 0;
     }
-    if ((x >= 236)&&(x <= 452)&&(y >= 10)&&(y <= 266)&&(level >= 2)) {
-        f2CT++;
-        if (f2CT >= 10) {
-            myfighters.push(new fighter2(300, "M"));
-            f2CT = 0;
-        }
+    if (f2CT >= 10) {
+        myfighters.push(new fighter2(300, "M"));
+        f2CT = 0;
     }
-    if ((x >= 462)&&(x <= 678)&&(y >= 10)&&(y <= 266)&&(level >= 3)) {
-        f3CT++;
-        if (f3CT >= 10) {
-            myfighters.push(new fighter3(300, "M"));
-            f3CT = 0;
-        }
+    if (f3CT >= 10) {
+        myfighters.push(new fighter3(300, "M"));
+        f3CT = 0;
     }
-    if ((x >= 688)&&(x <= 904)&&(y >= 10)&&(y <= 266)&&(level >= 4)) {
-        f4CT++;
-        if (f4CT >= 15) {
-            myfighters.push(new fighter4(300, "M"));
-            f4CT = 0;
-        }
+    if (f4CT >= 15) {
+        myfighters.push(new fighter4(300, "M"));
+        f4CT = 0;
     }
-    if ((x >= 914)&&(x <= 1130)&&(y >= 10)&&(y <= 266)&&(level >= 5)) {
-        f5CT++;
-        if (f5CT >= 15) {
-            myfighters.push(new fighter5(300, "M"));
-            f5CT = 0;
-        }
+    if (f5CT >= 15) {
+        myfighters.push(new fighter5(300, "M"));
+        f5CT = 0;
     }
-    if ((x >= 1140)&&(x <= 1356)&&(y >= 10)&&(y <= 266)&&(level >= 6)) {
-        f6CT++;
-        if (f6CT >= 30) {
-            myfighters.push(new fighter6(300, "M"));
-            f6CT = 0;
-        }
+    if (f6CT >= 30) {
+        myfighters.push(new fighter6(300, "M"));
+        f6CT = 0;
     }
 }
 
@@ -1703,6 +1906,16 @@ function drawctrlcanvas() {
         ctrlctx.closePath();
     }
 
+    if (level == 7) {f1CT += 0.01, f2CT += 0.01, f3CT += 0.01, f4CT += 0.01, f5CT += 0.01, f6CT += 0.01;}
+    else {f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;}
+    if (f1CT < 0) {f1CT = 0;}
+    if (f2CT < 0) {f2CT = 0;}
+    if (f3CT < 0) {f3CT = 0;}
+    if (f4CT < 0) {f4CT = 0;}
+    if (f5CT < 0) {f5CT = 0;}
+    if (f6CT < 0) {f6CT = 0;}
+    summon_my_fighter();
+
     ctrlctx.beginPath();
     ctrlctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctrlctx.fillRect(10, 10, 216, 256-256*f1CT/5);
@@ -1712,19 +1925,29 @@ function drawctrlcanvas() {
     ctrlctx.fillRect(914, 10, 216, 256-256*f5CT/15);
     ctrlctx.fillRect(1140, 10, 216, 256-256*f6CT/30);
     ctrlctx.closePath();
-    f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;
-    if (f1CT < 0) {f1CT = 0;}
-    if (f2CT < 0) {f2CT = 0;}
-    if (f3CT < 0) {f3CT = 0;}
-    if (f4CT < 0) {f4CT = 0;}
-    if (f5CT < 0) {f5CT = 0;}
-    if (f6CT < 0) {f6CT = 0;}
+}
+
+function scrollfix() {
+    scroll_counter++;
+    if ((window.scrollX == window_x_scroll)) {
+        if (scroll_counter >= 1000) {
+            window.scrollBy((myfront-(window.scrollX+window.innerWidth/2))/30, 0);
+            window_x_scroll = window.scrollX;
+            if (Math.abs(myfront-(window.scrollX+window.innerWidth/2)) < 1) {scroll_counter = 500;}
+        }
+    }
+    else {
+        scroll_counter = 0;
+        window_x_scroll = window.scrollX;
+    }
+
 }
 
 function rungame() {
     if (level != 7) {reflashsummonenemy();}
     drawgamecanvas();
     drawctrlcanvas();
+    scrollfix();
     if (isgame == true) {setTimeout(function() {rungame();}, 10)}
     else {
         showmenu();
@@ -1774,6 +1997,8 @@ function drawBasic() {
 
 function startgame() {
     menu.style.display = "none";
+    scroll_counter = 1000;
+    window_x_scroll = window.scrollX;
     isgame = true;
     rungame();
 }
@@ -1781,13 +2006,16 @@ function startgame() {
 function nextlevel() {
     menu.style.display = "none";
     level += 1;
-    if (level != 7) {
+    if (level == 7) {finaleboss.remake();}
+    else {
         enemyCD = 0;
         damages = [0, 0];
         mydamages = [0, 0, 0, 0, 0, 0];
         dmg_numbers = [];
         myfighters = [];
         my_frontest = [], enemy_frontest = [];
+        scroll_counter = 1000;
+        window_x_scroll = window.scrollX;
     }
     enemyfighters = [];
     f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0;
@@ -1799,7 +2027,8 @@ function nextlevel() {
 }
 
 function retry() {
-    level -= 2;
+    level--;
+    if (level == 6) {level--;}
     if (level < 1) {level = 0;}
     enemysummonpoint = 2525;
     nextlevel();
