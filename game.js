@@ -4,11 +4,11 @@ var ctrlcanvas = document.getElementById("control");
 var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
 var isshowdamage = document.getElementById("subshowdamage");
-var level = 1;
+var level = 1+6;
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
-var tower_hp = 50;
+var tower_hp = 25*(level+1);
 var my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
 var my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
 var damages = [0, 0];
@@ -19,8 +19,10 @@ var myfighters = [], enemyfighters = [];
 var my_frontest = [], enemy_frontest = [];
 var myfront = 350, enemyfront = 2475;
 var enemysummonpoint = 2525;
-var is_dmg_visual = "Off";
+var is_dmg_visual = "On";
 var window_x_scroll = 0, scroll_counter = 0;
+var L7BOSS_name_time = 0;
+var start_time, end_time;
 
 let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
 let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
@@ -1264,186 +1266,272 @@ class fighter6{
 class boss{
     constructor() {this.remake()}
     remake(){
-        this.hp = 2000;
-        this.block = 6;
+        this.final_hp = 200;
+        this.second_hp = 200;
+        this.first_hp = 200;
+        this.block = 100;
         this.taken = 0;
-        this.damage = 2.9;
-        this.armor = 0;
-        this.armor = 0;
-        this.shield = 100;
+        this.armor = 25;
+        this.shield = 200;
         this.action = 0;
         this.attackcount = 0;
         this.time = 0;
+        this.kbtime = 0;
         this.timeprime = 0;
-        this.show_color = "#FF0000";
-        this.body_color = "#28004D";
-        this.subbody_color = "#3A006F";
+        this.stairs = 0;
     }
     run(){
+        let x = enemysummonpoint-50;
+        if (this.shield > 0) {
+            this.shield += 0.015;
+            if (this.shield > 200) {this.shield = 200;}
+        }
         if (this.taken >= this.block) {
-            this.action = -2;
             this.taken = 0;
-            this.time = 30;
+            this.kbtime = 30;
         }
-        if (this.action == -2) {
+        if (this.stairs == 0) {
+            window.scrollTo(x, 0);
+            this.timeprime++;
             gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-60), 240-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(10), 300-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(15), 330-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30), 330-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-20), 310-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-50), 310-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-80), 330-56.25+((this.time-15)/2)**2);
-            gamectx.moveTo(this.x+this.direction*(-75), 320-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-120), 300-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-90), 255-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-80), 250-56.25+((this.time-15)/2)**2);
-            gamectx.fill();
-            gamectx.stroke();
+            let ramdcol = Math.floor(Math.random()*10)
+            gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
+            gamectx.fillRect(x-150-this.timeprime*1.2, 0, 300+this.timeprime*2.4, 350);
             gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-55), 215-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-15), 215-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(10), 245-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-15), 275-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-55), 275-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-80), 255-56.25+((this.time-15)/2)**2);
-            gamectx.fill();
-            gamectx.stroke();
-            gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
-            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 245-56.25+((this.time-15)/2)**2, this.x, 245-56.25+((this.time-15)/2)**2);
-            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230-56.25+((this.time-15)/2)**2, this.x+this.direction*(-20), 225-56.25+((this.time-15)/2)**2, this.x+this.direction*(-30), 230-56.25+((this.time-15)/2)**2);
-            gamectx.fill();
-            gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-65), 300-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-25), 330-56.25+((this.time-15)/2)**2);
-            gamectx.lineTo(this.x+this.direction*(-30), 295-56.25+((this.time-15)/2)**2);
-            gamectx.fill();
-            gamectx.stroke();
-            gamectx.closePath();
-            this.x -= this.direction*0.1;
-            this.time--;
-            if (this.time <= 0) {this.action = 0;}
+            if (this.timeprime >= 150) {this.stairs = 1, this.timeprime = 0, this.armor = 0;}
         }
-        else if (this.action == -1) {
+        else if (this.stairs == 1) {
+            window.scrollTo(x, 0);
+            this.timeprime++;
             gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.arc(this.x+this.direction*(-50), 290, 60, 0, Math.PI*2);
-            gamectx.fill();
-            gamectx.stroke();
+            let ramdcol = Math.floor(Math.random()*10)
+            gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
+            gamectx.fillRect(x-330, 0, 660, 350);
             gamectx.closePath();
-            if (this.team == "M") {
-                if (enemyfront-this.x <= 20) {
-                    send_AoE_dmg(this.damage, this.x, 250, this.team, 5);
-                    send_AoE_kb(this.x, 250, this.team);
-                    this.timeprime = 500;
-                    this.action = 0;
-                }
-                else {this.x += 7.5;}
-            }
-            else {
-                if (this.x-myfront <= 20) {
-                    send_AoE_dmg(this.damage, this.x, 250, this.team);
-                    send_AoE_kb(this.x, 250, this.team);
-                    this.timeprime = 500;
-                    this.action = 0;
-                }
-                else {this.x -= 7.5;}
-            }
+            send_AoE_dmg(50, x, 330, "E");
+            if (this.timeprime >= 100) {this.stairs = 2, this.timeprime = 0;}
         }
         else {
-            this.action++;
-            if (this.action > 60) {this.action = 0;}
-            gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-60), 240-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(10), 300-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(15), 330-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(5+Math.cos(Math.PI*this.action/30)), 350);
-            gamectx.lineTo(this.x+this.direction*(-30+Math.cos(Math.PI*this.action/30)), 350);
-            gamectx.lineTo(this.x+this.direction*(-30), 330-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-20), 310-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-50), 310-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-50-Math.cos(Math.PI*this.action/30)), 350);
-            gamectx.lineTo(this.x+this.direction*(-80-Math.cos(Math.PI*this.action/30)), 350);
-            gamectx.lineTo(this.x+this.direction*(-80), 330-Math.abs(this.action-30)/40);
-            gamectx.moveTo(this.x+this.direction*(-75), 320-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-90+Math.cos(Math.PI*this.action/30)*2), 350);
-            gamectx.lineTo(this.x+this.direction*(-120+Math.cos(Math.PI*this.action/30)*2), 350);
-            gamectx.lineTo(this.x+this.direction*(-120), 300-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-90), 255-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-80), 250-Math.abs(this.action-30)/40);
-            gamectx.fill();
-            gamectx.stroke();
-            gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-55), 215+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-15), 215+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(10), 245+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-15), 275+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-55), 275+Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-80), 255+Math.abs(this.action-30)/40);
-            gamectx.fill();
-            gamectx.stroke();
-            gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.weapon_color;
-            gamectx.moveTo(this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
-            gamectx.bezierCurveTo(this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 245+Math.abs(this.action-30)/40, this.x, 245+Math.abs(this.action-30)/40);
-            gamectx.bezierCurveTo(this.x+this.direction*(-10), 230+Math.abs(this.action-30)/40, this.x+this.direction*(-20), 225+Math.abs(this.action-30)/40, this.x+this.direction*(-30), 230+Math.abs(this.action-30)/40);
-            gamectx.fill();
-            gamectx.closePath();
-            gamectx.beginPath();
-            gamectx.fillStyle = this.body_color;
-            gamectx.moveTo(this.x+this.direction*(-65), 300-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-70-Math.cos(Math.PI*this.action/30)*2), 350);
-            gamectx.lineTo(this.x+this.direction*(-40-Math.cos(Math.PI*this.action/30)*2), 350);
-            gamectx.lineTo(this.x+this.direction*(-25), 330-Math.abs(this.action-30)/40);
-            gamectx.lineTo(this.x+this.direction*(-30), 295-Math.abs(this.action-30)/40);
-            gamectx.fill();
-            gamectx.stroke();
-            gamectx.closePath();
-            this.timeprime--;
-            if (this.timeprime <= 0) {this.action = -1;}
+            if (this.kbtime > 0) {
+                this.kbtime--;
+                enemysummonpoint++;
+            }
             else {
-                if (this.team == "M") {
-                    if (enemyfront-this.x <= 20) {this.action = 0;}
-                    else {this.x += 0.1;}
-                }
-                else {
-                    if (this.x-myfront <= 20) {this.action = 0;}
-                    else {this.x -= 0.1;}
+                this.timeprime--;
+                if (this.timeprime <= 0) {
+                    enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
+                    this.timeprime = 50+Math.floor(Math.random()*500)*(6-this.stairs);
                 }
             }
+            this.action++;
+            if (this.action > 150) {this.action = 0;}
+            for (i = 0; i < 30; i++) {
+                gamectx.beginPath();
+                gamectx.fillStyle = "#FFFFFF";
+                gamectx.moveTo(x+700-30*i, 190+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-10, 170+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-30-Math.abs(this.action-75)/5, 165+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-20, 180+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-5, 220+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-20, 260+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-30-Math.abs(this.action-75)/5, 275+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i-10, 270+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.lineTo(x+700-30*i, 250+Math.sin(i+Math.PI*this.action/75)*20);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+                gamectx.beginPath();
+                gamectx.fillStyle = "#FF0000";
+                gamectx.arc(x+700-30*i, 220+Math.sin(i+Math.PI*this.action/75)*20, 30, 0, Math.PI*2);
+                gamectx.fill();
+                gamectx.stroke();
+                gamectx.closePath();
+            }
+            gamectx.beginPath();
+            gamectx.fillStyle = "#28004D";
+            gamectx.moveTo(x+20, 50-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, -50-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, 100-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+530, 140-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+160, 210-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+130, 220-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+40, 150-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+110, 140-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+270, 70-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+150, 125-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+20, 50-Math.abs(this.action-75)/75);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#FFFFFF";
+            gamectx.moveTo(x+700, 350);
+            gamectx.lineTo(x+650, 200-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, 100-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, -Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+550, 20-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+650, 80-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+760, 200-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+800, 350);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#FFFFFF";
+            gamectx.moveTo(x+700, 260-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+530, 250-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+300, 340-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, 160-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+680, 180-Math.abs(this.action-75)/75);
+            gamectx.moveTo(x+750, 320-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+600, 315-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+500, 340-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+600, 275-Math.abs(this.action-75)/75);
+            gamectx.lineTo(x+730, 280-Math.abs(this.action-75)/75);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#4DFFFF"
+            gamectx.moveTo(x+320, 275+Math.abs(this.action-75)/50);
+            gamectx.bezierCurveTo(x+350, 195, x+350, 235+Math.sin(Math.PI*this.action/75)*10, x+500, 275-Math.abs(this.action-75)/50);
+            gamectx.bezierCurveTo(x+350, 315-Math.sin(Math.PI*this.action/75)*10, x+350, 355, x+320, 275-Math.abs(this.action-75)/50);
+            gamectx.fill();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#3A006F";
+            gamectx.moveTo(x+300, 200+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+250, 190+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+190, 190+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 180+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+90, 200+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+60, 220+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+130, 230+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+140, 225+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 225+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 250+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+100, 235+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+30, 250+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x, 275+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+30, 300+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+100, 285+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 300+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 325+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+140, 325+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+130, 320+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+70, 310+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+90, 350+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+150, 370+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+190, 360+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+250, 360+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+300, 350+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+320, 330+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+320, 210+Math.abs(this.action-75)/50);
+            gamectx.lineTo(x+300, 200+Math.abs(this.action-75)/50);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#FFFFFF";
+            gamectx.arc(x+230, 275+Math.abs(this.action-75)/50, 50, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#FF0000";
+            gamectx.arc(x+230, 275+Math.abs(this.action-75)/50, 10, 0, Math.PI*2);
+            gamectx.fill();
+            gamectx.closePath();
+            gamectx.beginPath();
+            gamectx.fillStyle = "#000000";
+            gamectx.arc(x+230, 275+Math.abs(this.action-75)/50, 50, 0, Math.PI*2);
+            gamectx.moveTo(x+230, 235-Math.abs(this.action-75)/75);
+            gamectx.bezierCurveTo(x+210+Math.cos(Math.PI*this.action/75)*10, 275-Math.abs(this.action-75)/75, x+210+Math.cos(Math.PI*this.action/75)*10, 275-Math.abs(this.action-75)/75, x+230, 315-Math.abs(this.action-75)/75);
+            gamectx.bezierCurveTo(x+250-Math.cos(Math.PI*this.action/75)*10, 275-Math.abs(this.action-75)/75, x+250-Math.cos(Math.PI*this.action/75)*10, 275-Math.abs(this.action-75)/75, x+230, 235-Math.abs(this.action-75)/75);
+            gamectx.fill();
+            gamectx.stroke();
+            gamectx.closePath();
+            enemysummonpoint -= 0.1;
+            send_AoE_kb(x, 1, "E");
         }
     }
     takedamage(take){
-        if (this.shield > 0) {this.shield -= take}
+        if (this.shield > 0) {this.shield -= take;}
         else {
-            this.hp -= take;
+            if (this.first_hp > 0) {
+                this.first_hp -= take;
+                if (this.first_hp <= 0) {this.shield = 200, this.timeprime = 0;}
+            }
+            else if (this.second_hp > 0) {
+                this.second_hp -= take;
+                if (this.second_hp <= 0) {this.shield = 200, this.timeprime = 0;}
+            }
+            else {this.final_hp -= take;}
             this.taken += take;
-            if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take/10, -1));}
         }
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(enemysummonpoint-50, take/10, -1));}
+    }
+}
+
+class bossattack1{
+    constructor(x, team) {
+        this.x = x;
+        this.team = team;
+        if (this.team == "M") {
+            this.direction = 1;
+            this.weapon_color = "#0080FF";
+        }
+        else {
+            this.direction = -1;
+            this.weapon_color = "#FF0000";
+        }
+        this.hp = 100;
+        this.block = 100;
+        this.taken = 0;
+        this.damage = 1;
+        this.armor = 0;
+        this.action = 0;
+        this.time = 0;
+    }
+    run(){
+        this.action++;
+        if (this.action > 60) {this.action = 0;}
+        gamectx.beginPath();
+        gamectx.fillStyle = "#4DFFFF";
+        gamectx.arc(this.x+this.direction*(-72.5)+Math.cos(Math.PI*this.action/30)*5, 277.5+Math.sin(Math.PI*this.action/30)*5, 72.5, 0, Math.PI*2);
+        gamectx.fill();
+        gamectx.closePath();
+        gamectx.beginPath();
+        gamectx.fillStyle = this.weapon_color;
+        gamectx.arc(this.x+this.direction*(-72.5), 277.5, 72.5-Math.abs(this.action-30)/20, 0, Math.PI*2);
+        gamectx.fill();
+        gamectx.closePath();
+        gamectx.beginPath();
+        gamectx.fillStyle = "#4DFFFF";
+        gamectx.arc(this.x+this.direction*(-72.5), 277.5, 50-Math.abs(this.action-30)/20, 0, Math.PI*2);
+        gamectx.fill();
+        gamectx.closePath();
+        if (this.team == "M") {
+            if (enemyfront-this.x <= 1) {
+                send_AoE_dmg(this.damage, this.x, 2, this.team);
+                send_AoE_kb(this.x, 1, "M");
+            }
+            this.x += 2;
+            if (this.x > 2872.5) {this.hp = 0;}
+        }
+        else {
+            if (this.x-myfront <= 1) {
+                send_AoE_dmg(this.damage, this.x, 2, this.team);
+                send_AoE_kb(this.x, 1, "E");
+            }
+            this.x -= 2;
+            if (this.x <-72.5) {this.hp = 0;}
+        }
+    }
+    takedamage(take){
+        this.hp -= take*10;
+        this.taken += take*10;
+        if (is_dmg_visual == "On") {dmg_numbers.push(new damagevisual(this.x, take*10, this.direction));}
     }
 }
 
@@ -1464,8 +1552,8 @@ function send_a_damage(damage, frontenemy, enemys) {
             let real_damage = damage - finaleboss.armor;
             if (real_damage < 0) {real_damage = 0;}
             finaleboss.takedamage(real_damage);
-            if (finaleboss.hp <= 0) {
-                finaleboss.hp = 0;
+            if (finaleboss.final_hp <= 0) {
+                finaleboss.final_hp = 0;
                 isgame = false;
             }
         }
@@ -1501,8 +1589,8 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
                 if (real_damage < 0) {real_damage = 0;}
                 if (counter != false) {mydamages[counter] += real_damage;}
                 finaleboss.takedamage(real_damage);
-                if (finaleboss.hp <= 0) {
-                    finaleboss.hp = 0;
+                if (finaleboss.final_hp <= 0) {
+                    finaleboss.final_hp = 0;
                     isgame = false;
                 }
             }
@@ -1635,42 +1723,68 @@ function draw_tower() {
     gamectx.fillStyle = "#FF0000";
     gamectx.fillRect(40, 50, 320, 20);
     gamectx.fillStyle = "#00EC00";
-    gamectx.fillRect(40, 50, 320*Math.max(my_tower_hp/tower_hp||0), 20);
+    gamectx.fillRect(40, 50, 320*Math.max(my_tower_hp/tower_hp, 0), 20);
     gamectx.closePath();
 
-    if (enemy_tower_hp_temp != enemy_tower_hp) {
+    if (level == 7) {
+        finaleboss.run();
+        L7BOSS_name_time++;
+        if (L7BOSS_name_time > 120) {L7BOSS_name_time = 0;}
         gamectx.beginPath();
-        gamectx.fillStyle = "#3A006F";
-        gamectx.fillRect(2460, 150, 300, 200);
-        gamectx.strokeRect(2460, 150, 300, 200);
-        gamectx.fillStyle = "#28004D";
-        gamectx.fillRect(2520, 100, 200, 50);
-        gamectx.strokeRect(2520, 100, 200, 50);
-        gamectx.fillStyle = "#272727";
-        gamectx.fillRect(2475, 200, 200, 150);
-        gamectx.strokeRect(2475, 200, 200, 150);
+        for (i = 0; i <= 1; i += 0.01) {
+            gamectx.fillStyle = "RGBA(255, 0, 0, "+i/10+")";
+            gamectx.fillText("BOSS", window.scrollX+window.innerWidth*0.5-30+10*(1-i)-Math.sin(Math.PI*L7BOSS_name_time/120), 375+Math.sin(Math.PI*L7BOSS_name_time/60)-10*(1-i));
+        }
         gamectx.closePath();
-        enemy_tower_hp_temp = enemy_tower_hp;
+        gamectx.beginPath();
+        gamectx.fillStyle = "#000000";
+        gamectx.fillText("BOSS", window.scrollX+window.innerWidth*0.5-30, 375);
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.0625, 380, window.innerWidth*0.29, 20);
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.355, 380, window.innerWidth*0.29, 20);
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.6475, 380, window.innerWidth*0.29, 20);
+        gamectx.fillStyle = "#FF0000";
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.0625, 380, Math.max(window.innerWidth*finaleboss.final_hp*0.00145, 0), 20);
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.355, 380, Math.max(window.innerWidth*finaleboss.second_hp*0.00145, 0), 20);
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.6475, 380, Math.max(window.innerWidth*finaleboss.first_hp*0.00145, 0), 20);
+        gamectx.fillStyle = "#ffffff";
+        gamectx.fillRect(window.scrollX+window.innerWidth*0.0625+Math.max(window.innerWidth*(200-finaleboss.shield)*0.0021875, 0), 400, Math.max(window.innerWidth*finaleboss.shield*0.004375, 0), 10);
+        gamectx.closePath();
     }
     else {
+        if (enemy_tower_hp_temp != enemy_tower_hp) {
+            gamectx.beginPath();
+            gamectx.fillStyle = "#3A006F";
+            gamectx.fillRect(2460, 150, 300, 200);
+            gamectx.strokeRect(2460, 150, 300, 200);
+            gamectx.fillStyle = "#28004D";
+            gamectx.fillRect(2520, 100, 200, 50);
+            gamectx.strokeRect(2520, 100, 200, 50);
+            gamectx.fillStyle = "#272727";
+            gamectx.fillRect(2475, 200, 200, 150);
+            gamectx.strokeRect(2475, 200, 200, 150);
+            gamectx.closePath();
+            enemy_tower_hp_temp = enemy_tower_hp;
+        }
+        else {
+            gamectx.beginPath();
+            gamectx.fillStyle = "#3A006F";
+            gamectx.fillRect(2450, 150, 300, 200);
+            gamectx.strokeRect(2450, 150, 300, 200);
+            gamectx.fillStyle = "#28004D";
+            gamectx.fillRect(2520, 100, 200, 50);
+            gamectx.strokeRect(2520, 100, 200, 50);
+            gamectx.fillStyle = "#272727";
+            gamectx.fillRect(2475, 200, 200, 150);
+            gamectx.strokeRect(2475, 200, 200, 150);
+            gamectx.closePath();
+        }
         gamectx.beginPath();
-        gamectx.fillStyle = "#3A006F";
-        gamectx.fillRect(2450, 150, 300, 200);
-        gamectx.strokeRect(2450, 150, 300, 200);
-        gamectx.fillStyle = "#28004D";
-        gamectx.fillRect(2520, 100, 200, 50);
-        gamectx.strokeRect(2520, 100, 200, 50);
-        gamectx.fillStyle = "#272727";
-        gamectx.fillRect(2475, 200, 200, 150);
-        gamectx.strokeRect(2475, 200, 200, 150);
+        gamectx.fillStyle = "#FF0000";
+        gamectx.fillRect(2440, 50, 320, 20);
+        gamectx.fillStyle = "#00EC00";
+        gamectx.fillRect(2440, 50, 320*Math.max(enemy_tower_hp/tower_hp, 0), 20);
         gamectx.closePath();
     }
-    gamectx.beginPath();
-    gamectx.fillStyle = "#FF0000";
-    gamectx.fillRect(2440, 50, 320, 20);
-    gamectx.fillStyle = "#00EC00";
-    gamectx.fillRect(2440, 50, 320*Math.max(enemy_tower_hp/tower_hp||0), 20);
-    gamectx.closePath();
 }
 
 function drawgamecanvas() {
@@ -1950,7 +2064,8 @@ function rungame() {
     scrollfix();
     if (isgame == true) {setTimeout(function() {rungame();}, 10)}
     else {
-        showmenu();
+        if (level == 6) {nextlevel();}
+        else {showmenu();}
     }
 }
 
@@ -1972,11 +2087,21 @@ function reflashsummonenemy() {
 }
 
 function showmenu() {
-    let inner_button = undefined;
-    if ((my_tower_hp == 0)&&(level == 7)) {inner_button = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>復仇</p></button>'}
-    else if (my_tower_hp == 0) {inner_button = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>再試一次</p></button>'}
-    else {inner_button = '<button onclick="nextlevel()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>下一關</p></button>'}
-    menu.innerHTML = '<div id="submenu"></div>'+inner_button
+    let inner_interact = undefined;
+    if (my_tower_hp == 0) {
+        if (level == 7) {inner_interact = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>復仇</p></button>';}
+        else {inner_interact = '<button onclick="retry()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>再試一次</p></button>';}
+    }
+    else {
+        if (level == 7) {
+            end_time = new Date();
+            let used_time = end_time.getTime()-start_time.getTime();
+            let time_str = Math.floor(used_time/3600000)+'時'+Math.floor((used_time%3600000)/60000)+"分"+(used_time%60000)/1000+'秒';
+            inner_interact = '<div style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>通關時間：'+time_str+'</p></div>';
+        }
+        else {inner_interact = '<button onclick="nextlevel()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>下一關</p></button>';}
+    }
+    menu.innerHTML = '<div id="submenu"></div>'+inner_interact;
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawBasic);
     menu.style.display = "block";
@@ -1996,6 +2121,7 @@ function drawBasic() {
 }
 
 function startgame() {
+    start_time = new Date();
     menu.style.display = "none";
     scroll_counter = 1000;
     window_x_scroll = window.scrollX;
@@ -2006,7 +2132,10 @@ function startgame() {
 function nextlevel() {
     menu.style.display = "none";
     level += 1;
-    if (level == 7) {finaleboss.remake();}
+    if (level == 7) {
+        finaleboss.remake();
+        L7BOSS_name_time = 0;
+    }
     else {
         enemyCD = 0;
         damages = [0, 0];
