@@ -2020,7 +2020,7 @@ function drawctrlcanvas() {
         ctrlctx.closePath();
     }
 
-    if (level == 7) {f1CT += 0.01, f2CT += 0.01, f3CT += 0.01, f4CT += 0.01, f5CT += 0.01, f6CT += 0.01;}
+    if (level == 7) {f1CT += 0.001, f2CT += 0.001, f3CT += 0.001, f4CT += 0.001, f5CT += 0.001, f6CT += 0.001;}
     else {f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;}
     if (f1CT < 0) {f1CT = 0;}
     if (f2CT < 0) {f2CT = 0;}
