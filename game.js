@@ -1283,7 +1283,7 @@ class boss{
     run(){
         let x = enemysummonpoint-50;
         if (this.shield > 0) {
-            this.shield += 0.015;
+            this.shield += (200-this.shield)*0.01;
             if (this.shield > 200) {this.shield = 200;}
         }
         if (this.taken >= this.block) {
@@ -1320,7 +1320,7 @@ class boss{
                 this.timeprime--;
                 if (this.timeprime <= 0) {
                     enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
-                    this.timeprime = 50+Math.floor(Math.random()*500)*(6-this.stairs);
+                    this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
                 }
             }
             this.action++;
