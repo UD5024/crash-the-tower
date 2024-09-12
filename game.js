@@ -1451,7 +1451,7 @@ class boss{
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
-            enemysummonpoint -= 0.1;
+            if (enemysummonpoint > 350) {enemysummonpoint -= 0.1;}
             send_AoE_kb(x, 1, "E");
         }
     }
