@@ -2064,10 +2064,7 @@ function rungame() {
     scrollfix();
     if (isgame == true) {setTimeout(function() {rungame();}, 10)}
     else {
-        if (level == 6) {
-            if (my_tower_hp == 0) {showmenu();}
-            else {nextlevel();}
-        }
+        if ((level == 6)&&(enemy_tower_hp == 0)) {nextlevel();}
         else {showmenu();}
     }
 }
