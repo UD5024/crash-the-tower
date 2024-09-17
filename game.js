@@ -5,6 +5,10 @@ var ctrlctx = ctrlcanvas.getContext("2d");
 var menu = document.getElementById("menu");
 var isshowdamage = document.getElementById("subshowdamage");
 var level = 1;
+var bosslevel = 0;
+var bossbuff = [];
+var bufftext = "";
+const bossbufflist = ["神盾", "狂熱"];
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
@@ -24,6 +28,9 @@ var window_x_scroll = 0, scroll_counter = 0;
 var L7BOSS_name_time = 0;
 var start_time, end_time;
 
+var maxlevel = window.localStorage.getItem("maxlevel");
+if ((maxlevel > 0) != true) {maxlevel = 0;}
+if (maxlevel > 0) {document.getElementById('submenu').innerHTML = '<p id="gametitle">crash the tower</p><button onclick="startgame()" id="startbutton2"><p>PLAY</p></button><button onclick="hardgame()" id="startbutton3"><p>挑戰模式</p></button><p id="hardmodetext">LV</p><input type="number" value="'+maxlevel+'" min="1" max="'+maxlevel+'" step="1" id="inputframe">';}
 let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
 let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
 document.querySelector('meta[name="viewport"]').setAttribute("content", "width=device-width, initial-scale="+percentage_reflesh+", maximum-scale="+percentage_reflesh+", user-scalable=0");
@@ -1283,7 +1290,8 @@ class boss{
     run(){
         let x = enemysummonpoint-50;
         if (this.shield > 0) {
-            this.shield += (200-this.shield)*0.01;
+            if (bossbuff.find(buff => buff == "神盾")) {this.shield += (200-this.shield)*0.005;}
+            this.shield += 0.2;
             if (this.shield > 200) {this.shield = 200;}
         }
         if (this.taken >= this.block) {
@@ -1321,6 +1329,7 @@ class boss{
                 if (this.timeprime <= 0) {
                     enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
                     this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
+                    if (bossbuff.find(buff => buff == "狂熱")) {this.timeprime *= Math.random()*Math.random()*Math.random()*0.5}
                 }
             }
             this.action++;
@@ -1733,7 +1742,7 @@ function draw_tower() {
         gamectx.beginPath();
         for (i = 0; i <= 1; i += 0.01) {
             gamectx.fillStyle = "RGBA(255, 0, 0, "+i/10+")";
-            gamectx.fillText("BOSS-「跟不上節奏的龍脊巨怪」", window.scrollX+window.innerWidth*0.5-220+10*(1-i)-Math.sin(Math.PI*L7BOSS_name_time/120), 375+Math.sin(Math.PI*L7BOSS_name_time/60)-10*(1-i));
+            gamectx.fillText("BOSS-「跟不上節奏的龍脊巨怪」"+bufftext, window.scrollX+window.innerWidth*0.5-220+10*(1-i)-Math.sin(Math.PI*L7BOSS_name_time/120), 375+Math.sin(Math.PI*L7BOSS_name_time/60)-10*(1-i));
         }
         gamectx.closePath();
         gamectx.beginPath();
@@ -2098,6 +2107,8 @@ function showmenu() {
             let used_time = end_time.getTime()-start_time.getTime();
             let time_str = Math.floor(used_time/3600000)+'時'+Math.floor((used_time%3600000)/60000)+"分"+(used_time%60000)/1000+'秒';
             inner_interact = '<div style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>通關時間：'+time_str+'</p></div>';
+            if ((bosslevel == maxlevel)&&(maxlevel < bossbufflist.length)) {maxlevel += 1;}
+            window.localStorage.setItem("maxlevel", maxlevel);
         }
         else {inner_interact = '<button onclick="nextlevel()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>下一關</p></button>';}
     }
@@ -2118,15 +2129,6 @@ function drawBasic() {
     };
     var chart = new google.visualization.ColumnChart(document.getElementById('submenu'));
     chart.draw(data, options);
-}
-
-function startgame() {
-    start_time = new Date();
-    menu.style.display = "none";
-    scroll_counter = 1000;
-    window_x_scroll = window.scrollX;
-    isgame = true;
-    rungame();
 }
 
 function nextlevel() {
@@ -2161,4 +2163,43 @@ function retry() {
     if (level < 1) {level = 0;}
     enemysummonpoint = 2525;
     nextlevel();
+}
+
+function startgame() {
+    level = 1;
+    bosslevel = 0;
+    bossbuff = [];
+    bufftext = "";
+    start_time = new Date();
+    menu.style.display = "none";
+    scroll_counter = 1000;
+    window_x_scroll = window.scrollX;
+    isgame = true;
+    rungame();
+}
+
+function hardgame() {
+    bosslevel = parseInt(document.getElementById("inputframe").value);
+    if ((bosslevel > 0)&&(bosslevel <= maxlevel)) {
+        bufftext = " (";
+        let temp_bufflist = bossbufflist.map((x) => x);
+        for (let i = 0;i < bosslevel;i++) {
+            let picker = Math.floor(Math.random()*temp_bufflist.length);
+            bossbuff.push(temp_bufflist[picker]);
+            bufftext += temp_bufflist[picker];
+            if (i+1 < bosslevel) {bufftext += " ";}
+            temp_bufflist.splice(picker, 1);
+        }
+        bufftext += ")";
+        level = 6;
+        tower_hp = 25*(level+1);
+        my_tower_hp = tower_hp, enemy_tower_hp = tower_hp;
+        my_tower_hp_temp = my_tower_hp, enemy_tower_hp_temp = enemy_tower_hp;
+        start_time = new Date();
+        menu.style.display = "none";
+        scroll_counter = 1000;
+        window_x_scroll = window.scrollX;
+        isgame = true;
+        rungame();
+    }
 }
