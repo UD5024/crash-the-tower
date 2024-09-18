@@ -1333,7 +1333,7 @@ class boss{
                 if (this.timeprime <= 0) {
                     enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
                     this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
-                    if (bossbuff.find(buff => buff == "狂熱")) {this.timeprime *= Math.random()*Math.random()*Math.random()*0.5}
+                    if (bossbuff.find(buff => buff == "狂熱")) {this.timeprime *= Math.random()*Math.random()*Math.random();}
                 }
             }
             this.action++;
