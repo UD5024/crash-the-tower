@@ -8,7 +8,7 @@ var level = 1;
 var bosslevel = 0;
 var bossbuff = [];
 var bufftext = "";
-const bossbufflist = ["神盾", "狂熱", "暴力"];
+const bossbufflist = ["神盾", "狂熱", "暴力", "堅韌"];
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
@@ -1306,7 +1306,11 @@ class boss{
             gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
             gamectx.fillRect(x-150-this.timeprime*1.2, 0, 300+this.timeprime*2.4, 350);
             gamectx.closePath();
-            if (this.timeprime >= 150) {this.stairs = 1, this.timeprime = 0, this.armor = 0;}
+            if (this.timeprime >= 150) {
+                this.stairs = 1, this.timeprime = 0;
+                if (bossbuff.find(buff => buff == "堅韌")) {this.armor = 0.1;}
+                else {this.armor = 0;}
+            }
         }
         else if (this.stairs == 1) {
             window.scrollTo(x, 0);
@@ -1461,8 +1465,9 @@ class boss{
             gamectx.stroke();
             gamectx.closePath();
             if (enemysummonpoint > 350) {enemysummonpoint -= 0.1;}
-            send_AoE_kb(x, 1, "E");
             if (bossbuff.find(buff => buff == "暴力")) {send_AoE_dmg(50, x, 1, "E");}
+            else {send_AoE_dmg(0.2, x, 1, "E");}
+            send_AoE_kb(x, 1, "E");
         }
     }
     takedamage(take){
