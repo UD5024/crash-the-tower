@@ -30,7 +30,7 @@ var start_time, end_time;
 
 var maxlevel = window.localStorage.getItem("maxlevel");
 if ((maxlevel > 0) != true) {maxlevel = 0;}
-if (maxlevel > 0) {document.getElementById('submenu').innerHTML = '<p id="gametitle">crash the tower</p><button onclick="startgame()" id="startbutton2"><p>PLAY</p></button><button onclick="hardgame()" id="startbutton3"><p>挑戰模式</p></button><p id="hardmodetext">LV</p><input type="number" value="'+maxlevel+'" min="1" max="'+maxlevel+'" step="1" id="inputframe">';}
+if (maxlevel > 0) {document.getElementById('submenu').innerHTML = '<p id="gametitle">crash the tower</p><button onclick="startgame()" id="startbutton2"><p>PLAY</p></button><button onclick="hardgame()" id="startbutton3"><p>挑戰模式</p></button><p id="hardmodetext">LV</p><input type="number" value="'+maxlevel+'" min="0" max="'+maxlevel+'" step="1" id="inputframe">';}
 let x_percentage_difference = window.innerWidth/1366, y_percentage_difference = window.innerHeight/695;
 let percentage_reflesh = Math.min(x_percentage_difference, y_percentage_difference);
 document.querySelector('meta[name="viewport"]').setAttribute("content", "width=device-width, initial-scale="+percentage_reflesh+", maximum-scale="+percentage_reflesh+", user-scalable=0");
@@ -2113,7 +2113,7 @@ function showmenu() {
             let used_time = end_time.getTime()-start_time.getTime();
             let time_str = Math.floor(used_time/3600000)+'時'+Math.floor((used_time%3600000)/60000)+"分"+(used_time%60000)/1000+'秒';
             inner_interact = '<div style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>通關時間：'+time_str+'</p></div>';
-            if ((bosslevel == maxlevel)&&(maxlevel < bossbufflist.length)) {maxlevel += 1;}
+            if ((bosslevel == maxlevel)&&(maxlevel < bossbufflist.length)) {maxlevel = (bosslevel+1);}
             window.localStorage.setItem("maxlevel", maxlevel);
         }
         else {inner_interact = '<button onclick="nextlevel()" style="margin: auto; width: 15%; height: 15%; font-size: 3vh; position: absolute; left: 80%; top: 80%; z-index: 11; background-color: #FF8000"><p>下一關</p></button>';}
@@ -2186,7 +2186,7 @@ function startgame() {
 
 function hardgame() {
     bosslevel = parseInt(document.getElementById("inputframe").value);
-    if ((bosslevel > 0)&&(bosslevel <= maxlevel)) {
+    if ((bosslevel >= 0)&&(bosslevel <= maxlevel)) {
         bufftext = " (";
         let temp_bufflist = bossbufflist.map((x) => x);
         for (let i = 0;i < bosslevel;i++) {
@@ -2208,4 +2208,5 @@ function hardgame() {
         isgame = true;
         rungame();
     }
+    else {alert("現在能挑戰的難度為LV0~LV"+maxlevel)}
 }
