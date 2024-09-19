@@ -779,7 +779,7 @@ class fighter4{
             if (this.time == 30) {
                 if (this.team == "M") {
                     send_AoE_dmg(this.damage, this.x, 100, this.team, 3);
-                    send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);
+                    if (level < 7) {send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);}
                 }
                 else {
                     send_AoE_dmg(this.damage, this.x, 100, this.team);
