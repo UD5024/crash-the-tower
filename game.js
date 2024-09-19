@@ -1329,22 +1329,13 @@ class boss{
             gamectx.beginPath();
             let ramdcol = Math.floor(Math.random()*10)
             gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
-            gamectx.fillRect(x-550, 0, 1400, 350);
+            gamectx.fillRect(x-450, 0, 1600, 350);
             gamectx.closePath();
             this.takedamage(1);
-            send_AoE_dmg(50, x+150, 700, "E");
-            if (this.timeprime >= 100) {this.stairs = 3, this.timeprime = 0;}
-        }
-        else if (this.stairs == 2) {
-            window.scrollTo(x, 0);
-            this.timeprime++;
-            gamectx.beginPath();
-            let ramdcol = Math.floor(Math.random()*10)
-            gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
-            gamectx.fillRect(x-150-this.timeprime*1.2, 0, 300+this.timeprime*2.4, 350);
-            gamectx.closePath();
-            if (this.timeprime >= 150) {
-                this.stairs = 1, this.timeprime = 0;
+            if (this.final_hp <= 0) {this.final_hp = 0.1, this.shield = 0.1;}
+            send_AoE_dmg(50, x+350, 800, "E");
+            if (this.timeprime >= 100) {
+                this.stairs = 3, this.timeprime = 0;
                 if (bossbuff.find(buff => buff == "堅韌")) {this.armor = 0.1;}
                 else {this.armor = 0;}
             }
@@ -1487,13 +1478,13 @@ class boss{
                 this.kbtime--;
                 if (bossbuff.find(buff => buff == "毀滅")) {
                     enemysummonpoint += 0.1;
-                    let ramdis = Math.random()*700;
-                    let ramdis2 = Math.random()*75;
+                    let ramdis = Math.random()*800;
+                    let ramdis2 = Math.random()*100;
                     gamectx.beginPath();
                     let ramdcol = Math.floor(Math.random()*10)
                     gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
-                    gamectx.fillRect(x+150 - ramdis, 0, ramdis2, 350);
-                    gamectx.fillRect(x+150 + ramdis - ramdis2, 0, ramdis2, 350);
+                    gamectx.fillRect(x+350 - ramdis, 0, ramdis2, 350);
+                    gamectx.fillRect(x+350 + ramdis - ramdis2, 0, ramdis2, 350);
                     gamectx.closePath();
                     if (this.kbtime == 0) {
                         this.stairs = 2, this.timeprime = 0;
@@ -2083,7 +2074,7 @@ function drawctrlcanvas() {
         ctrlctx.closePath();
     }
 
-    if (level == 7) {f1CT += 0.001*(1+bosslevel), f2CT += 0.001*(1+bosslevel), f3CT += 0.001*(1+bosslevel), f4CT += 0.001*(1+bosslevel), f5CT += 0.001*(1+bosslevel), f6CT += 0.001*(1+bosslevel);}
+    if (level == 7) {f1CT += 0.002*(1+bosslevel), f2CT += 0.002*(1+bosslevel), f3CT += 0.002*(1+bosslevel), f4CT += 0.002*(1+bosslevel), f5CT += 0.002*(1+bosslevel), f6CT += 0.002*(1+bosslevel);}
     else {f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;}
     if (f1CT < 0) {f1CT = 0;}
     if (f2CT < 0) {f2CT = 0;}
