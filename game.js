@@ -1333,7 +1333,11 @@ class boss{
                 if (this.timeprime <= 0) {
                     enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
                     this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
-                    if (bossbuff.find(buff => buff == "狂熱")) {this.timeprime *= Math.random()*Math.random()*Math.random();}
+                    if (bossbuff.find(buff => buff == "狂熱")) {
+                        this.timeprime *= Math.random();
+                        if (this.first_hp == 0) {this.timeprime *= Math.random();}
+                        if (this.second_hp == 0) {this.timeprime *= Math.random();}
+                    }
                 }
             }
             this.action++;
@@ -1503,7 +1507,8 @@ class bossattack1{
         this.hp = 100;
         this.block = 100;
         this.taken = 0;
-        this.damage = 1;
+        if (bossbuff.find(buff => buff == "暴力")) {this.damage = 12;}
+        else {this.damage = 1;}
         this.armor = 0;
         this.action = 0;
         this.time = 0;
