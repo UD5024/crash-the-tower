@@ -8,7 +8,7 @@ var level = 1;
 var bosslevel = 0;
 var bossbuff = [];
 var bufftext = "";
-const bossbufflist = ["神盾", "狂熱", "暴力", "堅韌"];
+const bossbufflist = ["神盾", "狂熱", "暴力", "堅韌", "毀滅"];
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
@@ -1296,7 +1296,8 @@ class boss{
         }
         if (this.taken >= this.block) {
             this.taken = 0;
-            this.kbtime = 30;
+            if (bossbuff.find(buff => buff == "毀滅")) {this.kbtime = 200, this.armor = 25;}
+            else {this.kbtime = 30;}
         }
         if (this.stairs == 0) {
             window.scrollTo(x, 0);
@@ -1321,25 +1322,34 @@ class boss{
             gamectx.fillRect(x-330, 0, 660, 350);
             gamectx.closePath();
             send_AoE_dmg(50, x, 330, "E");
-            if (this.timeprime >= 100) {this.stairs = 2, this.timeprime = 0;}
+            if (this.timeprime >= 100) {this.stairs = 3, this.timeprime = 0;}
+        }
+        else if (this.stairs == 2) {
+            this.timeprime++;
+            gamectx.beginPath();
+            let ramdcol = Math.floor(Math.random()*10)
+            gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
+            gamectx.fillRect(x-550, 0, 1400, 350);
+            gamectx.closePath();
+            this.takedamage(1);
+            send_AoE_dmg(50, x+150, 700, "E");
+            if (this.timeprime >= 100) {this.stairs = 3, this.timeprime = 0;}
+        }
+        else if (this.stairs == 2) {
+            window.scrollTo(x, 0);
+            this.timeprime++;
+            gamectx.beginPath();
+            let ramdcol = Math.floor(Math.random()*10)
+            gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
+            gamectx.fillRect(x-150-this.timeprime*1.2, 0, 300+this.timeprime*2.4, 350);
+            gamectx.closePath();
+            if (this.timeprime >= 150) {
+                this.stairs = 1, this.timeprime = 0;
+                if (bossbuff.find(buff => buff == "堅韌")) {this.armor = 0.1;}
+                else {this.armor = 0;}
+            }
         }
         else {
-            if (this.kbtime > 0) {
-                this.kbtime--;
-                enemysummonpoint++;
-            }
-            else {
-                this.timeprime--;
-                if (this.timeprime <= 0) {
-                    enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
-                    this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
-                    if (bossbuff.find(buff => buff == "狂熱")) {
-                        this.timeprime *= Math.random();
-                        if (this.first_hp == 0) {this.timeprime *= Math.random();}
-                        if (this.second_hp == 0) {this.timeprime *= Math.random();}
-                    }
-                }
-            }
             this.action++;
             if (this.action > 150) {this.action = 0;}
             for (i = 0; i < 30; i++) {
@@ -1472,6 +1482,39 @@ class boss{
             if (bossbuff.find(buff => buff == "暴力")) {send_AoE_dmg(50, x, 1, "E");}
             else {send_AoE_dmg(0.2, x, 1, "E");}
             send_AoE_kb(x, 1, "E");
+
+            if (this.kbtime > 0) {
+                this.kbtime--;
+                if (bossbuff.find(buff => buff == "毀滅")) {
+                    enemysummonpoint += 0.1;
+                    let ramdis = Math.random()*700;
+                    let ramdis2 = Math.random()*75;
+                    gamectx.beginPath();
+                    let ramdcol = Math.floor(Math.random()*10)
+                    gamectx.fillStyle = "#FF"+ramdcol+ramdcol+ramdcol+ramdcol;
+                    gamectx.fillRect(x+150 - ramdis, 0, ramdis2, 350);
+                    gamectx.fillRect(x+150 + ramdis - ramdis2, 0, ramdis2, 350);
+                    gamectx.closePath();
+                    if (this.kbtime == 0) {
+                        this.stairs = 2, this.timeprime = 0;
+                        if (bossbuff.find(buff => buff == "堅韌")) {this.armor = 0.1;}
+                        else {this.armor = 0;}
+                    }
+                }
+                else {enemysummonpoint++;}
+            }
+            else {
+                this.timeprime--;
+                if (this.timeprime <= 0) {
+                    enemyfighters.push(new bossattack1(enemysummonpoint, "E"));
+                    this.timeprime = 50+Math.floor(Math.random()*400)*(6-this.stairs);
+                    if (bossbuff.find(buff => buff == "狂熱")) {
+                        this.timeprime *= Math.random();
+                        if (this.first_hp == 0) {this.timeprime *= Math.random();}
+                        if (this.second_hp == 0) {this.timeprime *= Math.random();}
+                    }
+                }
+            }
         }
     }
     takedamage(take){
@@ -2040,7 +2083,7 @@ function drawctrlcanvas() {
         ctrlctx.closePath();
     }
 
-    if (level == 7) {f1CT += 0.001, f2CT += 0.001, f3CT += 0.001, f4CT += 0.001, f5CT += 0.001, f6CT += 0.001;}
+    if (level == 7) {f1CT += 0.001*(1+bosslevel), f2CT += 0.001*(1+bosslevel), f3CT += 0.001*(1+bosslevel), f4CT += 0.001*(1+bosslevel), f5CT += 0.001*(1+bosslevel), f6CT += 0.001*(1+bosslevel);}
     else {f1CT -= 0.01, f2CT -= 0.01, f3CT -= 0.01, f4CT -= 0.01, f5CT -= 0.01, f6CT -= 0.01;}
     if (f1CT < 0) {f1CT = 0;}
     if (f2CT < 0) {f2CT = 0;}
@@ -2213,5 +2256,5 @@ function hardgame() {
         isgame = true;
         rungame();
     }
-    else {alert("現在能挑戰的難度為LV0~LV"+maxlevel)}
+    else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
 }
