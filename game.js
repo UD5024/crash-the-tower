@@ -778,7 +778,6 @@ class fighter4{
             this.armor = 100;
             if (this.time == 30) {
                 if (this.team == "M") {
-                    console.log(this.hp)
                     send_AoE_dmg(this.damage*this.hp, this.x, 100, this.team, 3);
                     if (level < 7) {send_AoE_dmg(this.damage*this.hp/10, this.x, 100, this.enemyteam);}
                 }
@@ -2290,4 +2289,5 @@ function hardgame() {
         rungame();
     }
     else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
+
 }
