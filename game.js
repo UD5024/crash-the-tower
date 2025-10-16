@@ -1504,10 +1504,7 @@ class boss{
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
-            if (enemysummonpoint > 350) {
-                if (bossbuff.find(buff => buff == "急速")) enemysummonpoint -= 0.3;
-                else enemysummonpoint -= 0.15;
-            }
+            if (enemysummonpoint > 350) {enemysummonpoint -= 0.1;}
             if (bossbuff.find(buff => buff == "暴力")) {send_AoE_dmg(50, x, 1, "E");}
             else {send_AoE_dmg(0.2, x, 1, "E");}
             send_AoE_kb(x, 1, "E");
@@ -1515,8 +1512,7 @@ class boss{
             if (this.kbtime > 0) {
                 this.kbtime--;
                 if ((this.taken != 0)&&(bossbuff.find(buff => buff == "毀滅"))) {
-                    if (bossbuff.find(buff => buff == "急速")) enemysummonpoint += 0.3;
-                    else enemysummonpoint += 0.15;
+                    enemysummonpoint += 0.1;
                     let ramdis = Math.random()*800;
                     let ramdis2 = Math.random()*100;
                     gamectx.beginPath();
@@ -1826,6 +1822,7 @@ function draw_tower() {
 
     if (level == 7) {
         finaleboss.run();
+        if (bossbuff.find(buff => buff == "急速")) {finaleboss.run();finaleboss.run();}
         L7BOSS_name_time++;
         if (L7BOSS_name_time > 120) {L7BOSS_name_time = 0;}
         gamectx.beginPath();
@@ -2292,6 +2289,4 @@ function hardgame() {
         rungame();
     }
     else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
-
 }
-
