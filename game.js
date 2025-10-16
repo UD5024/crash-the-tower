@@ -1506,8 +1506,8 @@ class boss{
             gamectx.closePath();
             if (enemysummonpoint > 350) {enemysummonpoint -= 0.1;}
             if (bossbuff.find(buff => buff == "暴力")) {send_AoE_dmg(50, x, 1, "E");}
-            else {send_AoE_dmg(0.2, x, 1, "E");}
-            send_AoE_kb(x, 1, "E");
+            else {send_AoE_dmg(0.2, x+1, 2, "E");}
+            send_AoE_kb(x+1, 2, "E");
 
             if (this.kbtime > 0) {
                 this.kbtime--;
@@ -2289,4 +2289,5 @@ function hardgame() {
         rungame();
     }
     else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
+
 }
