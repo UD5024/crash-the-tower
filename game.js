@@ -8,7 +8,7 @@ var level = 1;
 var bosslevel = 0;
 var bossbuff = [];
 var bufftext = "";
-const bossbufflist = ["神盾", "狂熱", "暴力", "堅韌", "毀滅"];
+const bossbufflist = ["神盾", "狂熱", "暴力", "堅韌", "毀滅", "急速", "強襲"];
 var chalist = [0];
 var enemyCD = 0;
 var f1CT = 0, f2CT = 0, f3CT = 0, f4CT = 0, f5CT = 0, f6CT = 0; //5, 10, 10, 15, 15, 30
@@ -782,8 +782,8 @@ class fighter4{
                     if (level < 7) {send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);}
                 }
                 else {
-                    send_AoE_dmg(this.damage, this.x, 100, this.team);
-                    send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);
+                    send_AoE_dmg(this.damage*this.hp/2.5, this.x, 100, this.team);
+                    send_AoE_dmg(this.damage*this.hp/10, this.x, 100, this.enemyteam);
                 }
             }
             gamectx.beginPath();
@@ -1286,6 +1286,8 @@ class boss{
         this.kbtime = 0;
         this.timeprime = 0;
         this.stairs = 0;
+        this.snipingenergy = 0;
+        this.snipingenergy_charger = 10;
     }
     run(){
         let x = enemysummonpoint-50;
@@ -1295,9 +1297,10 @@ class boss{
             if (this.shield > 200) {this.shield = 200;}
         }
         if (this.taken >= this.block) {
-            this.taken = 0;
-            if (bossbuff.find(buff => buff == "毀滅")) {this.kbtime = 200, this.armor = 25;}
-            else {this.kbtime = 30;}
+            if (this.kbtime == 0) {
+                if (bossbuff.find(buff => buff == "毀滅")) {this.kbtime = 200, this.armor = 25;}
+                else {this.kbtime = 30;}
+            }
         }
         if (this.stairs == 0) {
             window.scrollTo(x, 0);
@@ -1364,6 +1367,38 @@ class boss{
                 gamectx.fill();
                 gamectx.stroke();
                 gamectx.closePath();
+            }
+            if (bossbuff.find(buff => buff == "強襲")) {
+                this.snipingenergy += Math.floor(Math.random()*10);
+                if (this.snipingenergy < 3600) {
+                    gamectx.beginPath();
+                    gamectx.fillStyle = "#4DFFFF";
+                    gamectx.arc(x-220, 220+Math.sin(29+Math.PI*this.action/75)*20, this.snipingenergy/100, 0, Math.PI*2);
+                    gamectx.fill();
+                    gamectx.closePath();
+                    gamectx.beginPath();
+                    gamectx.strokeStyle = "#4DFFFF";
+                    gamectx.moveTo(x-220, 220+Math.sin(29+Math.PI*this.action/75)*20);
+                    gamectx.lineTo(x-220+Math.cos(Math.random()*Math.PI*2)*(-this.snipingenergy)*(this.snipingenergy-3600)/10000, 220+Math.sin(29+Math.PI*this.action/75)*20+Math.sin(Math.random()*Math.PI*2)*(-this.snipingenergy)*(this.snipingenergy-3600)/10000);
+                    gamectx.stroke();
+                    gamectx.strokeStyle = "#000000";
+                    gamectx.closePath();
+                }
+                else if (this.snipingenergy < 3650) {
+                    gamectx.beginPath();
+                    gamectx.fillStyle = "#4DFFFF";
+                    gamectx.arc(x-220, 220+Math.sin(29+Math.PI*this.action/75)*20, 3650-this.snipingenergy, 0, Math.PI*2);
+                    gamectx.fill();
+                    gamectx.closePath();
+                    gamectx.beginPath();
+                    gamectx.fillRect(0, -3430+Math.sin(29+Math.PI*this.action/75)*20+this.snipingenergy, x-220, 7310-this.snipingenergy*2);
+                    gamectx.closePath();
+                    if (this.snipingenergy < 3605) {
+                        send_AoE_dmg(1, 0, x-220, "E");
+                        send_AoE_kb(0, x-220, "E");
+                    }
+                }
+                else {this.snipingenergy = 0, this.snipingenergy_charger = Math.floor(Math.random()*10);}
             }
             gamectx.beginPath();
             gamectx.fillStyle = "#28004D";
@@ -1469,15 +1504,19 @@ class boss{
             gamectx.fill();
             gamectx.stroke();
             gamectx.closePath();
-            if (enemysummonpoint > 350) {enemysummonpoint -= 0.1;}
+            if (enemysummonpoint > 350) {
+                if (bossbuff.find(buff => buff == "急速")) enemysummonpoint -= 0.3;
+                else enemysummonpoint -= 0.15;
+            }
             if (bossbuff.find(buff => buff == "暴力")) {send_AoE_dmg(50, x, 1, "E");}
             else {send_AoE_dmg(0.2, x, 1, "E");}
             send_AoE_kb(x, 1, "E");
 
             if (this.kbtime > 0) {
                 this.kbtime--;
-                if (bossbuff.find(buff => buff == "毀滅")) {
-                    enemysummonpoint += 0.1;
+                if ((this.taken != 0)&&(bossbuff.find(buff => buff == "毀滅"))) {
+                    if (bossbuff.find(buff => buff == "急速")) enemysummonpoint += 0.3;
+                    else enemysummonpoint += 0.15;
                     let ramdis = Math.random()*800;
                     let ramdis2 = Math.random()*100;
                     gamectx.beginPath();
@@ -1487,12 +1526,15 @@ class boss{
                     gamectx.fillRect(x+350 + ramdis - ramdis2, 0, ramdis2, 350);
                     gamectx.closePath();
                     if (this.kbtime == 0) {
-                        this.stairs = 2, this.timeprime = 0;
+                        this.stairs = 2, this.timeprime = 0, this.taken = 0;
                         if (bossbuff.find(buff => buff == "堅韌")) {this.armor = 0.1;}
                         else {this.armor = 0;}
                     }
                 }
-                else {enemysummonpoint++;}
+                else {
+                    enemysummonpoint++;
+                    if (this.kbtime == 0) {this.taken = 0;}
+                }
             }
             else {
                 this.timeprime--;
@@ -1633,7 +1675,7 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
             if (Math.abs(enemyfighters[i].x-x) <= range) {
                 let real_damage = damage - enemyfighters[i].armor;
                 if (real_damage < 0) {real_damage = 0;}
-                enemyfighters[i].takedamage(real_damage);
+                enemyfighters[i].takedamage(real_damage*1.5);
                 if (counter != false) {mydamages[counter] += real_damage;}
             }
         }
@@ -1680,7 +1722,9 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
 
 function send_AoE_kb(x, range, team){
     if (team == "M") {
-        for (i = 0; i < enemyfighters.length; i++) {if (Math.abs(enemyfighters[i].x-x) <= range) {enemyfighters[i].taken = enemyfighters[i].block;}}}
+        for (i = 0; i < enemyfighters.length; i++) {if (Math.abs(enemyfighters[i].x-x) <= range) {enemyfighters[i].taken = enemyfighters[i].block;}}
+        if ((level == 7)&&(Math.abs(enemysummonpoint-x) <= range)) {finaleboss.kbtime = 10;}
+    }
     else {for (i = 0; i < myfighters.length; i++) {if (Math.abs(myfighters[i].x-x) <= range) {myfighters[i].taken = myfighters[i].block;}}}
 }
 
