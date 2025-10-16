@@ -1394,7 +1394,7 @@ class boss{
                     gamectx.fillRect(0, -3430+Math.sin(29+Math.PI*this.action/75)*20+this.snipingenergy, x-220, 7310-this.snipingenergy*2);
                     gamectx.closePath();
                     if (this.snipingenergy < 3610) {
-                        send_AoE_dmg(this.snipingenergy_charger/2, 0, x-220, "E");
+                        send_AoE_dmg(20/this.snipingenergy_charger, 0, x-220, "E");
                         send_AoE_kb(0, x-220, "E");
                     }
                 }
@@ -2291,3 +2291,4 @@ function hardgame() {
     else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
 
 }
+
