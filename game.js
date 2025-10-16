@@ -775,14 +775,15 @@ class fighter4{
             if (this.time <= 0) {this.action = -1;}
         }
         else if (this.action == -1) {
-            this.hp = my_tower_hp;
+            this.armor = 100;
             if (this.time == 30) {
                 if (this.team == "M") {
-                    send_AoE_dmg(this.damage, this.x, 100, this.team, 3);
-                    if (level < 7) {send_AoE_dmg(this.damage/2, this.x, 100, this.enemyteam);}
+                    console.log(this.hp)
+                    send_AoE_dmg(this.damage*this.hp, this.x, 100, this.team, 3);
+                    if (level < 7) {send_AoE_dmg(this.damage*this.hp/10, this.x, 100, this.enemyteam);}
                 }
                 else {
-                    send_AoE_dmg(this.damage*this.hp/2.5, this.x, 100, this.team);
+                    send_AoE_dmg(this.damage*this.hp, this.x, 100, this.team);
                     send_AoE_dmg(this.damage*this.hp/10, this.x, 100, this.enemyteam);
                 }
             }
@@ -1671,7 +1672,7 @@ function send_AoE_dmg(damage, x, range, team, counter = false) {
             if (Math.abs(enemyfighters[i].x-x) <= range) {
                 let real_damage = damage - enemyfighters[i].armor;
                 if (real_damage < 0) {real_damage = 0;}
-                enemyfighters[i].takedamage(real_damage*1.5);
+                enemyfighters[i].takedamage(real_damage);
                 if (counter != false) {mydamages[counter] += real_damage;}
             }
         }
@@ -2289,7 +2290,4 @@ function hardgame() {
         rungame();
     }
     else {alert("現在能挑戰的難度為LV0~LV"+maxlevel);}
-
 }
-
-
